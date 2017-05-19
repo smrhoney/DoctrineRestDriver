@@ -61,7 +61,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame('genious=1', $request->getQuery());
         $this->assertSame('GET http://circle.ai?genious=1 HTTP/1.1', $request->__toString());
         $this->assertEquals([], $request->getCurlOptions());
-        $this->assertEquals(200, $request->getExpectedStatusCode());
     }
 
     /**

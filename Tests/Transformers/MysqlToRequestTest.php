@@ -200,7 +200,6 @@ class MysqlToRequestTest extends \PHPUnit_Framework_TestCase {
             'url'                => $this->apiUrl . '/products',
             'curlOptions'        => $this->options,
             'payload'            => json_encode(['name' => 'myName']),
-            'expectedStatusCode' => 201
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -282,7 +281,6 @@ class MysqlToRequestTest extends \PHPUnit_Framework_TestCase {
             'method'              => 'delete',
             'url'                 => $this->apiUrl . '/products/1',
             'curlOptions'         => $this->options,
-            'expectedStatusCode'  => 204
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));

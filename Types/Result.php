@@ -18,7 +18,7 @@
 
 namespace Circle\DoctrineRestDriver\Types;
 
-use Circle\DoctrineRestDriver\Enums\SqlOperations;
+use Circle\DoctrineRestDriver\Enums\HttpMethods;
 use Circle\DoctrineRestDriver\MetaData;
 use PHPSQLParser\PHPSQLParser;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,11 +51,12 @@ class Result {
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public function __construct($query, Response $response, array $options = []) {
+    public function __construct($query, $requestMethod, Response $response, array $options = []) {
         $tokens  = (new PHPSQLParser())->parse($query);
         $content = Format::create($options)->decode($response->getContent());
+        $responseCode = $response->getStatusCode();
 
-        $this->result = $this->createResult($tokens, $content);
+        $this->result = $this->createResult($tokens, $requestMethod, $responseCode, $content);
         $this->id     = $this->createId($tokens);
     }
 
@@ -97,11 +98,10 @@ class Result {
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    private function createResult(array $tokens, array $content = null) {
-        $operator = strtolower(array_keys($tokens)[0]);
-
-        if ($operator === SqlOperations::DELETE) return [];
-        $result = $operator === SqlOperations::SELECT ? SelectResult::create($tokens, $content) : $content;
+    private function createResult(array $tokens, $requestMethod, $responseCode, array $content = null) {
+        if($responseCode >= 400 && $responseCode < 600) return [];
+        if ($requestMethod === HttpMethods::DELETE) return [];
+        $result = $requestMethod === HttpMethods::GET ? SelectResult::create($tokens, $content) : $content;
         krsort($result);
 
         return $result;

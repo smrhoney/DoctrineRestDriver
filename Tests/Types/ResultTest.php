@@ -51,7 +51,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
             ]
         ];
 
-        $this->assertEquals($expected, (new Result('SELECT name FROM products WHERE id=1', $response))->get());
+        $this->assertEquals($expected, (new Result('SELECT name FROM products WHERE id=1', 'get', $response))->get());
     }
 
     /**
@@ -70,7 +70,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
 
         $expected = [];
 
-        $this->assertEquals($expected, (new Result('DELETE FROM products WHERE id=1', $response))->get());
+        $this->assertEquals($expected, (new Result('DELETE FROM products WHERE id=1', 'delete', $response))->get());
     }
 
     /**
@@ -91,7 +91,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
             'name' => 'testname'
         ];
 
-        $this->assertEquals($expected, (new Result('INSERT INTO products (name) VALUES ("testname")', $response))->get());
+        $this->assertEquals($expected, (new Result('INSERT INTO products (name) VALUES ("testname")', 'post', $response))->get());
     }
 
     /**
@@ -112,7 +112,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
             'name' => 'testname'
         ];
 
-        $this->assertEquals($expected, (new Result('UPDATE products SET name = "testname" WHERE id=1', $response))->get());
+        $this->assertEquals($expected, (new Result('UPDATE products SET name = "testname" WHERE id=1', 'patch', $response))->get());
     }
 
     /**
@@ -132,6 +132,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
 
         $expected = 1;
 
-        $this->assertEquals($expected, (new Result('UPDATE products SET name = "testname" WHERE id=1', $response))->id());
+        $this->assertEquals($expected, (new Result('UPDATE products SET name = "testname" WHERE id=1', 'patch', $response))->id());
     }
 }

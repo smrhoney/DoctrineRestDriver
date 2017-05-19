@@ -163,7 +163,7 @@ class Statement implements \IteratorAggregate, StatementInterface {
 
         try {
             $response     = $this->restClient->send($request);
-            $result       = new Result($query, $response, $this->options);
+            $result       = new Result($query, $request->getMethod(), $response, $this->options);
             $this->result = $result->get();
             $this->id     = $result->id();
 

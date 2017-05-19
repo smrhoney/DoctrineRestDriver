@@ -25,6 +25,9 @@ use Circle\DoctrineRestDriver\Types\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Circle\RestClientBundle\Services\RestClient as CiRestClient;
 use Circle\DoctrineRestDriver\Exceptions\RequestFailedException;
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Driver\DriverException as DriverExceptionInterface;
+use Doctrine\DBAL\Exception\DriverException;
 
 /**
  * Rest client to send requests and map responses
@@ -38,6 +41,25 @@ class RestClient {
      * @var CiRestClient
      */
     private $restClient;
+    
+    /**
+     * @var int[]
+     */
+    private $sucessfulStatusCodes = [
+        Response::HTTP_OK,
+        Response::HTTP_CREATED,
+        Response::HTTP_ACCEPTED,
+        Response::HTTP_NON_AUTHORITATIVE_INFORMATION,
+        Response::HTTP_NO_CONTENT,
+        Response::HTTP_RESET_CONTENT,
+        Response::HTTP_PARTIAL_CONTENT,
+        Response::HTTP_MULTI_STATUS,
+        Response::HTTP_ALREADY_REPORTED,
+        Response::HTTP_IM_USED,
+        Response::HTTP_NOT_FOUND,
+        Response::HTTP_GONE,
+        
+    ];
 
     /**
      * RestClient constructor
@@ -59,6 +81,55 @@ class RestClient {
         $method     = strtolower($request->getMethod());
         $response   = $method === HttpMethods::GET || $method === HttpMethods::DELETE ? $this->restClient->$method($request->getUrlAndQuery(), $request->getCurlOptions()) : $this->restClient->$method($request->getUrlAndQuery(), $request->getPayload(), $request->getCurlOptions());
 
-        return $response->getStatusCode() === $request->getExpectedStatusCode() ? $response : Exceptions::RequestFailedException($request, $response->getStatusCode(), $response->getContent());
+        try {
+            return $this->isSuccessfulRequest($response->getStatusCode()) ? $response : Exceptions::RequestFailedException($request, $response->getStatusCode(), $response->getContent());
+        } catch (DBALException\DriverException $e) {
+            throw $this->handleFailedResponse($response, $e);
+        }
+    }
+    
+    /**
+     * Handle a failed response by creating a specific exception for the given
+     * response.
+     * 
+     * @param Response $response
+     * @param DriverExceptionInterface $exception
+     * @return DriverException
+     */
+    private function handleFailedResponse(Response $response, DriverExceptionInterface $exception) {
+        switch ($response->getStatusCode()) {
+            case Response::HTTP_CONFLICT:
+                return new DBALException\UniqueConstraintViolationException($response->getContent(), $exception);
+
+            case Response::HTTP_BAD_REQUEST:
+                return new DBALException\SyntaxErrorException($response->getContent(), $exception);
+
+            case Response::HTTP_METHOD_NOT_ALLOWED:
+            case Response::HTTP_NOT_ACCEPTABLE:
+            case Response::HTTP_REQUEST_TIMEOUT:
+            case Response::HTTP_LENGTH_REQUIRED:
+            case Response::HTTP_INTERNAL_SERVER_ERROR:
+                return new DBALException\ServerException($response->getContent(), $exception);
+            
+            case Response::HTTP_CONFLICT:
+                return new DBALException\ConstraintViolationException($response->getContent(), $exception);
+
+            case Response::HTTP_UNAUTHORIZED:
+            case Response::HTTP_FORBIDDEN:
+            case Response::HTTP_PROXY_AUTHENTICATION_REQUIRED:
+            case Response::HTTP_BAD_GATEWAY:
+            case Response::HTTP_SERVICE_UNAVAILABLE:
+            case Response::HTTP_GATEWAY_TIMEOUT:
+                return new DBALException\ConnectionException($response->getContent(), $exception);
+
+            default:
+                return new DBALException\DriverException($response->getContent(), $exception);
+
+        }
+    }
+    
+    private function isSuccessfulRequest($statusCode)
+    {
+        return in_array($statusCode, $this->sucessfulStatusCodes);
     }
 }

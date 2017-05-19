@@ -18,6 +18,7 @@
 
 namespace Circle\DoctrineRestDriver\Exceptions;
 
+use Doctrine\DBAL\Driver\DriverException;
 use Circle\DoctrineRestDriver\Types\Request;
 
 /**
@@ -29,8 +30,14 @@ use Circle\DoctrineRestDriver\Types\Request;
  *
  * @SuppressWarnings("PHPMD.StaticAccess")
  */
-class RequestFailedException extends DoctrineRestDriverException {
+class RequestFailedException extends DoctrineRestDriverException implements DriverException {
 
+    /**
+     *
+     * @var int
+     */
+    private $errorCode;
+    
     /**
      * RequestFailedException constructor
      *
@@ -39,6 +46,18 @@ class RequestFailedException extends DoctrineRestDriverException {
      * @param string  $errorMessage
      */
     public function __construct(Request $request, $errorCode, $errorMessage) {
+        $this->errorCode = $errorCode;
         parent::__construct('Execution failed for request: ' . $request . ': HTTPCode ' . $errorCode . ', body ' . $errorMessage, $errorCode);
     }
+
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    public function getSQLState()
+    {
+        return null;
+    }
+
 }
