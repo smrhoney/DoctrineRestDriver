@@ -57,8 +57,7 @@ class RestClient {
         Response::HTTP_ALREADY_REPORTED,
         Response::HTTP_IM_USED,
         Response::HTTP_NOT_FOUND,
-        Response::HTTP_GONE,
-        
+        Response::HTTP_GONE
     ];
 
     /**
@@ -78,8 +77,8 @@ class RestClient {
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
     public function send(Request $request) {
-        $method     = strtolower($request->getMethod());
-        $response   = $method === HttpMethods::GET || $method === HttpMethods::DELETE ? $this->restClient->$method($request->getUrlAndQuery(), $request->getCurlOptions()) : $this->restClient->$method($request->getUrlAndQuery(), $request->getPayload(), $request->getCurlOptions());
+        $method   = strtolower($request->getMethod());
+        $response = $method === HttpMethods::GET || $method === HttpMethods::DELETE ? $this->restClient->$method($request->getUrlAndQuery(), $request->getCurlOptions()) : $this->restClient->$method($request->getUrlAndQuery(), $request->getPayload(), $request->getCurlOptions());
 
         try {
             return $this->isSuccessfulRequest($response->getStatusCode()) ? $response : Exceptions::RequestFailedException($request, $response->getStatusCode(), $response->getContent());

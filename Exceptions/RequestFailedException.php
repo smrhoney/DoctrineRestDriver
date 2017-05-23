@@ -50,13 +50,11 @@ class RequestFailedException extends DoctrineRestDriverException implements Driv
         parent::__construct('Execution failed for request: ' . $request . ': HTTPCode ' . $errorCode . ', body ' . $errorMessage, $errorCode);
     }
 
-    public function getErrorCode()
-    {
+    public function getErrorCode() {
         return $this->errorCode;
     }
 
-    public function getSQLState()
-    {
+    public function getSQLState() {
         return null;
     }
 
