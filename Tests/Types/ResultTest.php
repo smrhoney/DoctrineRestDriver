@@ -132,6 +132,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase {
 
         $expected = 1;
 
-        $this->assertEquals($expected, (new Result('UPDATE products SET name = "testname" WHERE id=1', 'patch', $response))->id());
+        $this->assertEquals($expected, (new Result('UPDATE products SET name = "testname" WHERE id=1', 'put', $response))->id());
     }
 }

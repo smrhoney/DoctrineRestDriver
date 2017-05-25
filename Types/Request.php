@@ -52,6 +52,11 @@ class Request {
     private $query;
 
     /**
+     * @var int
+     */
+    private $expectedStatusCodes = [200];
+
+    /**
      * Request constructor
      *
      * @param array $options
@@ -79,6 +84,7 @@ class Request {
             'curlOptions'         => $options,
             'query'               => $this->query,
             'payload'             => $this->payload,
+            'expectedStatusCodes' => $this->expectedStatusCodes
         ]);
     }
 
@@ -134,6 +140,15 @@ class Request {
      */
     public function getUrlAndQuery() {
         return $this->url . '?' . $this->query;
+    }
+
+    /**
+     * returns whether the given status code is expected
+     *
+     * @return bool
+     */
+    public function isExpectedStatusCode($statusCode) {
+        return in_array($statusCode, $this->expectedStatusCodes);
     }
 
     /**

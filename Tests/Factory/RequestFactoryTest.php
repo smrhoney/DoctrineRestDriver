@@ -71,9 +71,10 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase {
         $parser   = new PHPSQLParser();
         $factory  = new RequestFactory();
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => 'http://circle.ai/products/1',
-            'curlOptions' => $this->requestOptions
+            'method'              => 'get',
+            'url'                 => 'http://circle.ai/products/1',
+            'curlOptions'         => $this->requestOptions,
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $routings = $this->getMockBuilder('Circle\DoctrineRestDriver\Annotations\DataSource')->getMock();
@@ -93,10 +94,11 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase {
         $this->requestOptions[CURLOPT_HTTPHEADER][] = 'Limit: 5';
         $this->requestOptions[CURLOPT_HTTPHEADER][] = 'Offset: 10';
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => 'http://circle.ai/products',
-            'curlOptions' => $this->requestOptions,
-            'query'       => '',
+            'method'              => 'get',
+            'url'                 => 'http://circle.ai/products',
+            'curlOptions'         => $this->requestOptions,
+            'query'               => '',
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $routings = $this->getMockBuilder('Circle\DoctrineRestDriver\Annotations\DataSource')->getMock();
@@ -115,10 +117,11 @@ class RequestFactoryTest extends \PHPUnit_Framework_TestCase {
         $factory  = new RequestFactory();
         $this->factoryOptions['driverOptions']['pagination_as_query'] = true;
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => 'http://circle.ai/products',
-            'curlOptions' => $this->requestOptions,
-            'query'       => 'per_page=5&page=3',
+            'method'              => 'get',
+            'url'                 => 'http://circle.ai/products',
+            'curlOptions'         => $this->requestOptions,
+            'query'               => 'per_page=5&page=3',
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $routings = $this->getMockBuilder('Circle\DoctrineRestDriver\Annotations\DataSource')->getMock();

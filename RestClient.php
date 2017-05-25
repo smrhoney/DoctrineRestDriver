@@ -39,24 +39,6 @@ class RestClient {
      * @var CiRestClient
      */
     private $restClient;
-    
-    /**
-     * @var int[]
-     */
-    private $sucessfulStatusCodes = [
-        Response::HTTP_OK,
-        Response::HTTP_CREATED,
-        Response::HTTP_ACCEPTED,
-        Response::HTTP_NON_AUTHORITATIVE_INFORMATION,
-        Response::HTTP_NO_CONTENT,
-        Response::HTTP_RESET_CONTENT,
-        Response::HTTP_PARTIAL_CONTENT,
-        Response::HTTP_MULTI_STATUS,
-        Response::HTTP_ALREADY_REPORTED,
-        Response::HTTP_IM_USED,
-        Response::HTTP_NOT_FOUND,
-        Response::HTTP_GONE
-    ];
 
     /**
      * RestClient constructor
@@ -79,15 +61,10 @@ class RestClient {
         $response = $method === HttpMethods::GET || $method === HttpMethods::DELETE ? $this->restClient->$method($request->getUrlAndQuery(), $request->getCurlOptions()) : $this->restClient->$method($request->getUrlAndQuery(), $request->getPayload(), $request->getCurlOptions());
 
         try {
-            return $this->isSuccessfulRequest($response->getStatusCode()) ? $response : Exceptions::RequestFailedException($request, $response->getStatusCode(), $response->getContent());
+            return $request->isExpectedStatusCode($response->getStatusCode()) ? $response : Exceptions::RequestFailedException($request, $response->getStatusCode(), $response->getContent());
         } catch (DBALException\DriverException $e) {
             $responseExceptionFactory = new ResponseExceptionFactory();
             throw $responseExceptionFactory->createDbalException($response, $e);
         }
-    }
-
-    private function isSuccessfulRequest($statusCode)
-    {
-        return in_array($statusCode, $this->sucessfulStatusCodes);
     }
 }

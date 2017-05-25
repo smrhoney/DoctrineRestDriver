@@ -18,35 +18,41 @@
 
 namespace Circle\DoctrineRestDriver\Types;
 
+use Circle\DoctrineRestDriver\Annotations\DataSource;
 use Circle\DoctrineRestDriver\Validation\Assertions;
-use Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException;
 
 /**
- * Value type
+ * Type class for status codes
  *
  * @author    Tobias Hauck <tobias@circle.ai>
  * @copyright 2015 TeeAge-Beatz UG
  */
-class Value {
+class StatusCode {
 
     /**
-     * Infers the type of a given string
+     * @var array
+     */
+    private static $expectedStatusCodes = [
+        'get'    => [200, 203, 206, 404],
+        'put'    => [200, 202, 203, 204, 205, 404],
+        'patch'  => [200, 202, 203, 204, 205, 404],
+        'post'   => [200, 201, 202, 203, 204, 205],
+        'delete' => [200, 202, 203, 204, 205, 404]
+    ];
+
+    /**
+     * returns the status code depending on its input
      *
-     * @param  string $value
+     * @param  string     $method
+     * @param  DataSource $annotation
      * @return string
-     * @throws InvalidTypeException
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public static function create($value) {
-        Str::assert($value, 'value');
-        if ($value === '') return null;
-        if (empty($value)) return $value;
+    public static function create($method, DataSource $annotation = null) {
+        Str::assert($method, 'method');
 
-        $unquoted = preg_replace('/\"|\\\'|\`$/', '', preg_replace('/^\"|\\\'|\`/', '', $value));
-        if (!is_numeric($unquoted))                   return $unquoted;
-        if ((string) intval($unquoted) === $unquoted) return intval($unquoted);
-
-        return floatval($unquoted);
+        $annotationStatusCodes = !empty($annotation) && $annotation->getStatusCode() !== null ? (array) $annotation->getStatusCode() : array();
+        return $annotationStatusCodes ?: self::$expectedStatusCodes[$method];
     }
 }
