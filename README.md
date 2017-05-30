@@ -79,6 +79,23 @@ If your API routes follow these few conventions, using the driver is very easy:
 
 Don't worry, if this is not the case: Luckily, we provide a few annotations for you to configure your own routes.
 
+## Responses
+
+Your API is allowed to respond with a handful of different HTTP status codes to
+be deemed a successful response.
+
+| Method    | "successful" status codes    |
+|-----------|------------------------------|
+| GET       | 200, 203, 206, 404           |
+| PUT/PATCH | 200, 202, 203, 204, 205, 404 |
+| POST      | 200, 201, 202, 203, 204, 205 |
+| DELETE    | 200, 202, 203, 204, 205, 404 |
+
+Note that a 404 response is considered a "successful" response in some circumstances.
+This allows the driver to reflect a database being queried but returning no data
+due to an entity not being found, for example "/entity/1" will allow a 404 without
+causing an exception as it's perfectly acceptable to not find an entity from a
+database.
 
 The examples below show how to use the driver in a Symfony environment.
 
