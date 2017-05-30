@@ -100,7 +100,7 @@ class Result {
      */
     private function createResult(array $tokens, $requestMethod, $responseCode, array $content = null) {
         if($responseCode >= 400 && $responseCode < 600) return [];
-        if ($requestMethod === HttpMethods::DELETE) return [];
+        if ($requestMethod === HttpMethods::DELETE)     return [];
         $result = $requestMethod === HttpMethods::GET ? SelectResult::create($tokens, $content) : $content;
         krsort($result);
 

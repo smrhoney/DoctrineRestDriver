@@ -28,8 +28,7 @@ use Doctrine\DBAL\Exception as DBALException;
  * 
  * @author Rob Treacy <robert.treacy@thesalegroup.co.uk>
  */
-class ResponseExceptionFactoryTest extends \PHPUnit_Framework_TestCase
-{
+class ResponseExceptionFactoryTest extends \PHPUnit_Framework_TestCase {
     private $responseExceptionFactory;
     
     public function setUp() {
@@ -47,6 +46,9 @@ class ResponseExceptionFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($expectedExceptionClass, $return);
     }
     
+    /**
+     * Data provider for createDbalException test
+     */
     public function createDbalExceptionProvider() {
         return array(
             [$this->createResponseFromCode(Response::HTTP_BAD_REQUEST), DBALException\SyntaxErrorException::class],
