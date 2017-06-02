@@ -18,7 +18,6 @@
 
 namespace Circle\DoctrineRestDriver\Annotations;
 
-use Circle\DoctrineRestDriver\Types\MaybeInt;
 use Circle\DoctrineRestDriver\Types\MaybeList;
 use Circle\DoctrineRestDriver\Types\MaybeString;
 use Circle\DoctrineRestDriver\Types\Url;
@@ -45,7 +44,7 @@ trait Route {
     private $method;
 
     /**
-     * @var int
+     * @var int[]
      */
     private $statusCode;
 
@@ -65,7 +64,7 @@ trait Route {
         $settings = new ArrayCollection($values);
 
         $this->route      = Url::assert($settings->get('value'), 'value');
-        $this->statusCode = MaybeInt::assert($settings->get('statusCode'), 'statusCode');
+        $this->statusCode = MaybeList::assert((array) $settings->get('statusCode'), 'statusCode');
         $this->method     = MaybeString::assert($settings->get('method'), 'method');
         $this->options    = MaybeList::assert($settings->get('options'), 'options');
     }
@@ -82,7 +81,7 @@ trait Route {
     /**
      * returns the status code
      *
-     * @return int|null
+     * @return int[]|null
      */
     public function getStatusCode() {
         return $this->statusCode;

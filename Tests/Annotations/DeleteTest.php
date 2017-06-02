@@ -48,7 +48,7 @@ class DeleteTest extends \PHPUnit_Framework_TestCase {
         ]);
 
         $this->assertSame('http://www.mySite.com/delete', $delete->getRoute());
-        $this->assertSame(201, $delete->getStatusCode());
+        $this->assertSame([201], $delete->getStatusCode());
         $this->assertSame('DELETE', $delete->getMethod());
         $this->assertEquals([], $delete->getOptions());
     }

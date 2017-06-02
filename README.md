@@ -329,6 +329,28 @@ class Product {
 }
 ```
 
+If you have a list of acceptable status codes you can also pass an array to the
+```statusCode``` option:
+
+```php
+<?php
+namespace CircleBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Circle\DoctrineRestDriver\Annotations as DataSource;
+
+/**
+ * This annotation marks the class as managed entity:
+ *
+ * @ORM\Entity
+ * @ORM\Table("products")
+ * @DataSource\Select("http://www.yourSite.com/api/products/findOne/{id}", statusCode={200, 203, 404})
+ */
+class Product {
+   // ... //
+}
+```
+
 The annotations tell the driver to send the requests to the configured URLs for each custom configuration. If you just want to define a specific route for one method, you don't need to use all annotations provided. The ```{id}``` act as a placeholder for the entity's identifier.
 
 ```php

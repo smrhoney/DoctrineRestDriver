@@ -41,7 +41,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase {
      * @covers ::getPayload
      * @covers ::getQuery
      * @covers ::getCurlOptions
-     * @covers ::getExpectedStatusCode
+     * @covers ::isExpectedStatusCode
      * @covers ::__toString
      */
     public function constructAndGetAll() {
