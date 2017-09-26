@@ -52,7 +52,7 @@ class StatusCode {
     public static function create($method, DataSource $annotation = null) {
         Str::assert($method, 'method');
 
-        $annotationStatusCodes = !empty($annotation) && $annotation->getStatusCode() !== null ? (array) $annotation->getStatusCode() : array();
+        $annotationStatusCodes = !empty($annotation) && $annotation->getStatusCodes() !== null ? $annotation->getStatusCodes() : array();
         return $annotationStatusCodes ?: self::$expectedStatusCodes[$method];
     }
 }

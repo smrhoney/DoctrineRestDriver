@@ -35,20 +35,20 @@ class DeleteTest extends \PHPUnit_Framework_TestCase {
      * @group  unit
      * @covers ::__construct
      * @covers ::getRoute
-     * @covers ::getStatusCode
+     * @covers ::getStatusCodes
      * @covers ::getMethod
      * @covers ::getOptions
      */
     public function getRoute() {
         $delete = new Delete([
             'value'      => 'http://www.mySite.com/delete',
-            'statusCode' => 201,
+            'statusCodes' => [201],
             'method'     => 'DELETE',
             'options'    => []
         ]);
 
         $this->assertSame('http://www.mySite.com/delete', $delete->getRoute());
-        $this->assertSame([201], $delete->getStatusCode());
+        $this->assertSame([201], $delete->getStatusCodes());
         $this->assertSame('DELETE', $delete->getMethod());
         $this->assertEquals([], $delete->getOptions());
     }

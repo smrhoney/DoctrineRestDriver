@@ -296,9 +296,9 @@ use Circle\DoctrineRestDriver\Annotations as DataSource;
  * @ORM\Table("products")
  * @DataSource\Select("http://www.yourSite.com/api/products/findOne/{id}")
  * @DataSource\Fetch("http://www.yourSite.com/api/products/findAll")
- * @DataSource\Insert("http://www.yourSite.com/api/products/insert", statusCode=200)
+ * @DataSource\Insert("http://www.yourSite.com/api/products/insert", statusCodes={200})
  * @DataSource\Update("http://www.yourSite.com/api/products/update/{id}", method="POST")
- * @DataSource\Delete("http://www.yourSite.com/api/products/remove/{id}", method="POST", statusCode=200)
+ * @DataSource\Delete("http://www.yourSite.com/api/products/remove/{id}", method="POST", statusCodes={200})
  */
 class Product {
 
@@ -344,7 +344,7 @@ use Circle\DoctrineRestDriver\Annotations as DataSource;
  *
  * @ORM\Entity
  * @ORM\Table("products")
- * @DataSource\Select("http://www.yourSite.com/api/products/findOne/{id}", statusCode={200, 203, 404})
+ * @DataSource\Select("http://www.yourSite.com/api/products/findOne/{id}", statusCodes={200, 203, 404})
  */
 class Product {
    // ... //

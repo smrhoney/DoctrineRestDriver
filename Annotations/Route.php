@@ -46,7 +46,7 @@ trait Route {
     /**
      * @var int[]
      */
-    private $statusCode;
+    private $statusCodes;
 
     /**
      * @var array
@@ -64,7 +64,7 @@ trait Route {
         $settings = new ArrayCollection($values);
 
         $this->route      = Url::assert($settings->get('value'), 'value');
-        $this->statusCode = MaybeList::assert((array) $settings->get('statusCode'), 'statusCode');
+        $this->statusCodes = MaybeList::assert($settings->get('statusCodes'), 'statusCodes');
         $this->method     = MaybeString::assert($settings->get('method'), 'method');
         $this->options    = MaybeList::assert($settings->get('options'), 'options');
     }
@@ -83,8 +83,8 @@ trait Route {
      *
      * @return int[]|null
      */
-    public function getStatusCode() {
-        return $this->statusCode;
+    public function getStatusCodes() {
+        return $this->statusCodes;
     }
 
     /**

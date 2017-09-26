@@ -42,8 +42,8 @@ class StatusCodeTest extends \PHPUnit_Framework_TestCase {
         $annotation = $this->getMockBuilder('Circle\DoctrineRestDriver\Annotations\DataSource')->getMock();
         $annotation
             ->expects($this->exactly(2))
-            ->method('getStatusCode')
-            ->will($this->returnValue(202));
+            ->method('getStatusCodes')
+            ->will($this->returnValue([202]));
 
         $this->assertContains(202, StatusCode::create(HttpMethods::POST, $annotation));
     }
@@ -59,7 +59,7 @@ class StatusCodeTest extends \PHPUnit_Framework_TestCase {
         $annotation = $this->getMockBuilder('Circle\DoctrineRestDriver\Annotations\DataSource')->getMock();
         $annotation
             ->expects($this->once())
-            ->method('getStatusCode')
+            ->method('getStatusCodes')
             ->will($this->returnValue(null));
 
         $this->assertContains(201, StatusCode::create(HttpMethods::POST, $annotation));
