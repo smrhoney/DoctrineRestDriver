@@ -59,20 +59,12 @@ class SqlQuery {
      */
     public static function getStringRepresentation($param)
     {
-        if (is_int($param) || is_float($param))
-        {
-            return $param;
-        } elseif (is_numeric($param)) {
-            return (float)$param;
-        } elseif (is_string($param)) {
-            return '\'' . $param . '\'';
-        } elseif ($param === true) {
-            return 'true';
-        } elseif ($param === false) {
-            return 'false';
-        } elseif ($param === null) {
-            return 'null';
-        }
+        if (is_int($param) || is_float($param)) return $param;
+        if (is_numeric($param))                 return (float)$param;
+        if (is_string($param))                  return '\'' . $param . '\'';
+        if ($param === true)                    return 'true';
+        if ($param === false)                   return 'false';
+        if ($param === null)                    return 'null';
 
         throw new \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException('string | int | float | bool | null', '$param', $param);
     }
