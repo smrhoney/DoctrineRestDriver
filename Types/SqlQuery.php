@@ -72,9 +72,9 @@ class SqlQuery {
             return 'false';
         } elseif ($param === null) {
             return 'null';
-        } else {
-            Exceptions::InvalidTypeException('string | int | float | bool | null', '$param', $param);
         }
+
+        throw new \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException('string | int | float | bool | null', '$param', $param);
     }
 
     /**
