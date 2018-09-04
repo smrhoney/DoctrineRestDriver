@@ -42,5 +42,11 @@ class ValueTest extends \PHPUnit\Framework\TestCase {
         $this->assertSame(1.01, Value::create('1.01'));
         $this->assertSame('hello', Value::create('hello'));
         $this->assertSame('hello', Value::create('"hello"'));
+
+        $this->assertSame(true, Value::create('true'));
+        $this->assertSame(false, Value::create('false'));
+        $this->assertSame(null, Value::create('null'));
+
+        $this->assertNotSame(null, Value::create('false'));
     }
 }
