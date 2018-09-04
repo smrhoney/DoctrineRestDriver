@@ -30,7 +30,7 @@ use Circle\DoctrineRestDriver\Types\Request;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Security\NoAuthentication
  */
-class NoAuthenticationTest extends \PHPUnit_Framework_TestCase {
+class NoAuthenticationTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var NoAuthentication

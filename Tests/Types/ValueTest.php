@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\Value;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Value
  */
-class ValueTest extends \PHPUnit_Framework_TestCase {
+class ValueTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

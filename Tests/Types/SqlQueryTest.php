@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\SqlQuery;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\SqlQuery
  */
-class SqlQueryTest extends \PHPUnit_Framework_TestCase {
+class SqlQueryTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

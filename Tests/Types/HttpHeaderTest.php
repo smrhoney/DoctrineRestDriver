@@ -28,7 +28,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\HttpHeader
  */
-class HttpHeaderTest extends \PHPUnit_Framework_TestCase {
+class HttpHeaderTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var array

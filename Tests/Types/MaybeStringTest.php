@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\MaybeString;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\MaybeString
  */
-class MaybeStringTest extends \PHPUnit_Framework_TestCase {
+class MaybeStringTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\NotNil;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\NotNil
  */
-class NotNilTest extends \PHPUnit_Framework_TestCase {
+class NotNilTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

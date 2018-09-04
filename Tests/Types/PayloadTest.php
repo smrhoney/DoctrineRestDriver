@@ -29,7 +29,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Payload
  */
-class PayloadTest extends \PHPUnit_Framework_TestCase {
+class PayloadTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

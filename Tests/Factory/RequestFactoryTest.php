@@ -30,7 +30,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Factory\RequestFactory
  */
-class RequestFactoryTest extends \PHPUnit_Framework_TestCase {
+class RequestFactoryTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var array

@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Annotations\Delete;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\Delete
  */
-class DeleteTest extends \PHPUnit_Framework_TestCase {
+class DeleteTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

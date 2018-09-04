@@ -38,7 +38,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @SuppressWarnings("PHPMD.TooManyPublicMethods")
  */
-class TableTest extends \PHPUnit_Framework_TestCase {
+class TableTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

@@ -29,7 +29,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Identifier
  */
-class IdentifierTest extends \PHPUnit_Framework_TestCase {
+class IdentifierTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

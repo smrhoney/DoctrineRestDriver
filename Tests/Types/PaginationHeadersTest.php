@@ -28,7 +28,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\PaginationHeaders
  */
-class PaginationHeadersTest extends \PHPUnit_Framework_TestCase {
+class PaginationHeadersTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var array

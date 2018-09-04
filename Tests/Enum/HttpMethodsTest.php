@@ -29,7 +29,7 @@ use Circle\DoctrineRestDriver\Enums\SqlOperations;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Enums\HttpMethods
  */
-class HttpMethodsTest extends \PHPUnit_Framework_TestCase {
+class HttpMethodsTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

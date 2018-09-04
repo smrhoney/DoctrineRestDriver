@@ -29,7 +29,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\HttpQuery
  */
-class HttpQueryTest extends \PHPUnit_Framework_TestCase {
+class HttpQueryTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test
