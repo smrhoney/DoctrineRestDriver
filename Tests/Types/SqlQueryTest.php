@@ -54,6 +54,24 @@ class SqlQueryTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test
+     * @group unit
+     * @covers ::getStringRepresentation
+     *
+     * @throws \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException
+     * @SuppressWarnings("PHPMD.StaticAccess")
+     */
+    public function getStringRepresentation() {
+        $this->assertSame('true', SqlQuery::getStringRepresentation(true));
+        $this->assertSame('false', SqlQuery::getStringRepresentation(false));
+        $this->assertSame('null', SqlQuery::getStringRepresentation(null));
+
+        $this->assertNotSame('null', SqlQuery::getStringRepresentation(false));
+        $this->assertNotSame('null', SqlQuery::getStringRepresentation(true));
+        $this->assertNotSame('null', SqlQuery::getStringRepresentation(0));
+    }
+
+    /**
+     * @test
      * @group  unit
      * @covers ::quoteUrl
      *
