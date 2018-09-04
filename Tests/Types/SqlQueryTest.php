@@ -38,12 +38,17 @@ class SqlQueryTest extends \PHPUnit\Framework\TestCase {
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
     public function setParams() {
-        $query  = 'SELECT name FROM products WHERE id=? AND name=?';
+        $query  = 'SELECT name FROM products WHERE id=? AND name=? AND parent = ? AND active = ? AND foo = ? AND cost = ? OR cost = ?';
         $params = [
             1,
-            'myName'
+            'myName',
+            null,
+            true,
+            false,
+            0.0,
+            '2.5',
         ];
-        $expected = 'SELECT name FROM products WHERE id=1 AND name=myName';
+        $expected = 'SELECT name FROM products WHERE id=1 AND name=\'myName\' AND parent = null AND active = true AND foo = false AND cost = 0 OR cost = 2.5';
         $this->assertSame($expected, SqlQuery::setParams($query, $params));
     }
 
