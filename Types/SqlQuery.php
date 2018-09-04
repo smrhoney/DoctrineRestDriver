@@ -53,14 +53,17 @@ class SqlQuery {
     /**
      * @param $param
      *
-     * @return string
+     * @return string|int|float|boolean|null
      *
      * @throws \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException
      */
     public static function getStringRepresentation($param)
     {
-        if (is_int($param) || is_float($param) || is_numeric($param)) {
-            return (string)$param;
+        if (is_int($param) || is_float($param))
+        {
+            return $param;
+        } elseif (is_numeric($param)) {
+            return (float)$param;
         } elseif (is_string($param)) {
             return '\'' . $param . '\'';
         } elseif ($param === true) {

@@ -40,7 +40,15 @@ class Value {
      */
     public static function create($value) {
         Str::assert($value, 'value');
-        if (empty($value)) return null;
+
+        switch ($value) {
+            case 'true':
+                return true;
+            case 'false':
+                return false;
+            case 'null':
+                return null;
+        }
 
         $unquoted = preg_replace('/\"|\\\'|\`$/', '', preg_replace('/^\"|\\\'|\`/', '', $value));
         if (!is_numeric($unquoted))                   return $unquoted;
