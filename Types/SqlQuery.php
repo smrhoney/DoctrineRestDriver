@@ -44,8 +44,34 @@ class SqlQuery {
         Str::assert($query, 'query');
 
         return array_reduce($params, function($query, $param) {
+            $param = self::getStringRepresentation($param);
+
             return strpos($query, '?') ? substr_replace($query, $param, strpos($query, '?'), strlen('?')) : $query;
         }, $query);
+    }
+
+    /**
+     * @param $param
+     *
+     * @return string
+     *
+     * @throws \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException
+     */
+    public static function getStringRepresentation($param)
+    {
+        if (is_int($param) || is_float($param) || is_numeric($param)) {
+            return (string)$param;
+        } elseif (is_string($param)) {
+            return '\'' . $param . '\'';
+        } elseif ($param === true) {
+            return 'true';
+        } elseif ($param === false) {
+            return 'false';
+        } elseif ($param === null) {
+            return 'null';
+        } else {
+            Exceptions::InvalidTypeException('string | int | float | bool | null', '$param', $param);
+        }
     }
 
     /**
