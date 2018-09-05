@@ -56,7 +56,7 @@ class CurlOptionsTest extends \PHPUnit\Framework\TestCase {
             CURLOPT_TIMEOUT        => 25,
             CURLOPT_CONNECTTIMEOUT => 25,
             CURLOPT_CRLF           => true,
-            CURLOPT_SSLVERSION     => 3,
+            CURLOPT_SSLVERSION     => 0,
             CURLOPT_FOLLOWLOCATION => true,
         ];
     }
