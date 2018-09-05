@@ -211,7 +211,7 @@ class Statement implements \IteratorAggregate, StatementInterface {
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public function fetch($fetchMode = null) {
+    public function fetch($fetchMode = NULL, $cursorOrientation = \PDO::FETCH_ORI_NEXT, $cursorOffset = 0) {
         $fetchMode = empty($fetchMode) ? $this->fetchMode : $fetchMode;
         Assertions::assertSupportedFetchMode($fetchMode);
 
@@ -221,7 +221,7 @@ class Statement implements \IteratorAggregate, StatementInterface {
     /**
      * {@inheritdoc}
      */
-    public function fetchAll($fetchMode = null) {
+    public function fetchAll($fetchMode = NULL, $fetchArgument = NULL, $ctorArgs = NULL) {
         $result    = [];
         $fetchMode = empty($fetchMode) ? $this->fetchMode : $fetchMode;
 

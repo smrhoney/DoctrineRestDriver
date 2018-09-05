@@ -32,7 +32,7 @@ use Circle\DoctrineRestDriver\Types\Request;
  * @coversDefaultClass Circle\DoctrineRestDriver\Transformers\MysqlToRequest
  * @SuppressWarnings("PHPMD.TooManyPublicMethods")
  */
-class MysqlToRequestTest extends \PHPUnit_Framework_TestCase {
+class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
 
     /**
      *

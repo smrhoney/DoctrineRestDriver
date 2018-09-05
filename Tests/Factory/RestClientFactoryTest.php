@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Factory\RestClientFactory;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Factory\RestClientFactory
  */
-class RestClientFactoryTest extends \PHPUnit_Framework_TestCase {
+class RestClientFactoryTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

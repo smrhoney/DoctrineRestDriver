@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\RestClient
  */
-class RestClientTest extends \PHPUnit_Framework_TestCase {
+class RestClientTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var RestClient

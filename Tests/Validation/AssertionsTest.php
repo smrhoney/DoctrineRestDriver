@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Validation\Assertions;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Validation\Assertions
  */
-class AssertionsTest extends \PHPUnit_Framework_TestCase {
+class AssertionsTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

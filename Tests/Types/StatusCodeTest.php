@@ -29,7 +29,7 @@ use Circle\DoctrineRestDriver\Types\StatusCode;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\StatusCode
  */
-class StatusCodeTest extends \PHPUnit_Framework_TestCase {
+class StatusCodeTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

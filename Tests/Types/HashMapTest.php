@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\HashMap;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\HashMap
  */
-class HashMapTest extends \PHPUnit_Framework_TestCase {
+class HashMapTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

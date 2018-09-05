@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\Str;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Str
  */
-class StrTest extends \PHPUnit_Framework_TestCase {
+class StrTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

@@ -31,7 +31,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Annotation
  */
-class AnnotationTest extends \PHPUnit_Framework_TestCase {
+class AnnotationTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

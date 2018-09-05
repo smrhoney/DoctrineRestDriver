@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Formatters\Json;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Formatters\Json
  */
-class JsonTest extends \PHPUnit_Framework_TestCase {
+class JsonTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

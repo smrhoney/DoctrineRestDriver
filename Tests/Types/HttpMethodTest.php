@@ -29,7 +29,7 @@ use Circle\DoctrineRestDriver\Types\HttpMethod;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\HttpMethod
  */
-class HttpMethodTest extends \PHPUnit_Framework_TestCase {
+class HttpMethodTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

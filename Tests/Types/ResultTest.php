@@ -29,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Result
  */
-class ResultTest extends \PHPUnit_Framework_TestCase {
+class ResultTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

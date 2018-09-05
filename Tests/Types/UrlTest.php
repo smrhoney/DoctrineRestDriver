@@ -29,7 +29,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Url
  */
-class UrlTest extends \PHPUnit_Framework_TestCase {
+class UrlTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

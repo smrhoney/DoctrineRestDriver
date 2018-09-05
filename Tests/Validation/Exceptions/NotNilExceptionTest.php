@@ -30,7 +30,7 @@ use Circle\DoctrineRestDriver\Validation\Exceptions\NotNilException;
  *
  * @SuppressWarnings("PHPMD.StaticAccess")
  */
-class NotNilExceptionTest extends \PHPUnit_Framework_TestCase {
+class NotNilExceptionTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Driver;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Driver
  */
-class DriverTest extends \PHPUnit_Framework_TestCase {
+class DriverTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var Driver

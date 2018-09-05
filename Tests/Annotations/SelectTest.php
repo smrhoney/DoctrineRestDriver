@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Annotations\Select;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\Select
  */
-class SelectTest extends \PHPUnit_Framework_TestCase {
+class SelectTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

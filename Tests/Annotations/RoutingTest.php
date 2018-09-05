@@ -33,7 +33,7 @@ use Circle\DoctrineRestDriver\Annotations\Routing;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\Routing
  */
-class RoutingTest extends \PHPUnit_Framework_TestCase {
+class RoutingTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * {@inheritdoc}

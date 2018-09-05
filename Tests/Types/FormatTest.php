@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\Format;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Format
  */
-class FormatTest extends \PHPUnit_Framework_TestCase {
+class FormatTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

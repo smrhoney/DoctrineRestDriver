@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Annotations\Fetch;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\Fetch
  */
-class FetchTest extends \PHPUnit_Framework_TestCase {
+class FetchTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

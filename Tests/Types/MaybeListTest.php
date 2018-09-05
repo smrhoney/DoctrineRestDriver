@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\MaybeList;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\MaybeList
  */
-class MaybeListTest extends \PHPUnit_Framework_TestCase {
+class MaybeListTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

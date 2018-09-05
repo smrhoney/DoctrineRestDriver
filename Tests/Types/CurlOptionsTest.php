@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\CurlOptions;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\CurlOptions
  */
-class CurlOptionsTest extends \PHPUnit_Framework_TestCase {
+class CurlOptionsTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var array

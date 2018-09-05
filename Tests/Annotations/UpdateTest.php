@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Annotations\Update;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\Update
  */
-class UpdateTest extends \PHPUnit_Framework_TestCase {
+class UpdateTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

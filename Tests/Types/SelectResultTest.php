@@ -29,7 +29,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\SelectResult
  */
-class SelectResultTest extends \PHPUnit_Framework_TestCase {
+class SelectResultTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test
