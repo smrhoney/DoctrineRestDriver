@@ -30,7 +30,7 @@ use Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException;
  *
  * @SuppressWarnings("PHPMD.StaticAccess")
  */
-class InvalidTypeExceptionTest extends \PHPUnit_Framework_TestCase {
+class InvalidTypeExceptionTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

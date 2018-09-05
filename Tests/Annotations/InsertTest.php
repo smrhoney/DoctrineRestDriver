@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Annotations\Insert;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\Insert
  */
-class InsertTest extends \PHPUnit_Framework_TestCase {
+class InsertTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

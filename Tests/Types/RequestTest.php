@@ -29,7 +29,7 @@ use Circle\DoctrineRestDriver\Types\RestClientOptions;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Request
  */
-class RequestTest extends \PHPUnit_Framework_TestCase {
+class RequestTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

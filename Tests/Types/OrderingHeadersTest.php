@@ -28,7 +28,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\OrderingHeaders
  */
-class OrderingHeadersTest extends \PHPUnit_Framework_TestCase {
+class OrderingHeadersTest extends \PHPUnit\Framework\TestCase {
 
 
     /**

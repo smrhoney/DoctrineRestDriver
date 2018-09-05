@@ -30,7 +30,7 @@ use Circle\DoctrineRestDriver\Types\Request;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Security\HttpAuthentication
  */
-class HttpAuthenticationTest extends \PHPUnit_Framework_TestCase {
+class HttpAuthenticationTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @var HttpAuthentication

@@ -30,7 +30,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\RoutingTable
  */
-class RoutingTableTest extends \PHPUnit_Framework_TestCase {
+class RoutingTableTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * {@inheritdoc}

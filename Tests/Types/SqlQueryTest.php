@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\SqlQuery;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\SqlQuery
  */
-class SqlQueryTest extends \PHPUnit_Framework_TestCase {
+class SqlQueryTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test
@@ -38,13 +38,36 @@ class SqlQueryTest extends \PHPUnit_Framework_TestCase {
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
     public function setParams() {
-        $query  = 'SELECT name FROM products WHERE id=? AND name=?';
+        $query  = 'SELECT name FROM products WHERE id=? AND name=? AND parent = ? AND active = ? AND foo = ? AND cost = ? OR cost = ?';
         $params = [
             1,
-            'myName'
+            'myName',
+            null,
+            true,
+            false,
+            0.0,
+            '2.5',
         ];
-        $expected = 'SELECT name FROM products WHERE id=1 AND name=myName';
+        $expected = 'SELECT name FROM products WHERE id=1 AND name=\'myName\' AND parent = null AND active = true AND foo = false AND cost = 0 OR cost = 2.5';
         $this->assertSame($expected, SqlQuery::setParams($query, $params));
+    }
+
+    /**
+     * @test
+     * @group unit
+     * @covers ::getStringRepresentation
+     *
+     * @throws \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException
+     * @SuppressWarnings("PHPMD.StaticAccess")
+     */
+    public function getStringRepresentation() {
+        $this->assertSame('true', SqlQuery::getStringRepresentation(true));
+        $this->assertSame('false', SqlQuery::getStringRepresentation(false));
+        $this->assertSame('null', SqlQuery::getStringRepresentation(null));
+
+        $this->assertNotSame('null', SqlQuery::getStringRepresentation(false));
+        $this->assertNotSame('null', SqlQuery::getStringRepresentation(true));
+        $this->assertNotSame('null', SqlQuery::getStringRepresentation(0));
     }
 
     /**

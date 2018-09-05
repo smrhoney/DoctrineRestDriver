@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\Value;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Value
  */
-class ValueTest extends \PHPUnit_Framework_TestCase {
+class ValueTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test
@@ -42,5 +42,11 @@ class ValueTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame(1.01, Value::create('1.01'));
         $this->assertSame('hello', Value::create('hello'));
         $this->assertSame('hello', Value::create('"hello"'));
+
+        $this->assertSame(true, Value::create('true'));
+        $this->assertSame(false, Value::create('false'));
+        $this->assertSame(null, Value::create('null'));
+
+        $this->assertNotSame(null, Value::create('false'));
     }
 }

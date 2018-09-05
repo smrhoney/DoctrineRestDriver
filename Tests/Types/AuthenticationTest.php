@@ -28,7 +28,7 @@ use Circle\DoctrineRestDriver\Types\Authentication;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\Authentication
  */
-class AuthenticationTest extends \PHPUnit_Framework_TestCase {
+class AuthenticationTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

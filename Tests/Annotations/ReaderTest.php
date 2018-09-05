@@ -30,7 +30,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Annotations\Reader
  */
-class ReaderTest extends \PHPUnit_Framework_TestCase {
+class ReaderTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * {@inheritdoc}

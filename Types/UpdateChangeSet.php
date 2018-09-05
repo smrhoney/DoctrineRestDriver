@@ -45,7 +45,7 @@ class UpdateChangeSet {
 
         $values = array_map(function($token) {
             $segments = explode('=', $token['base_expr']);
-            return trim(Value::create($segments[1]));
+            return Value::create(trim($segments[1]));
         }, $tokens['SET']);
 
         return array_combine($columns, $values);

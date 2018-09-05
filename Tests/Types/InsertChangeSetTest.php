@@ -29,7 +29,7 @@ use PHPSQLParser\PHPSQLParser;
  *
  * @coversDefaultClass Circle\DoctrineRestDriver\Types\InsertChangeSet
  */
-class InsertChangeSetTest extends \PHPUnit_Framework_TestCase {
+class InsertChangeSetTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test

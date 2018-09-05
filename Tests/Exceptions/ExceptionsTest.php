@@ -31,7 +31,7 @@ use Circle\DoctrineRestDriver\Types\Request;
  *
  * @SuppressWarnings("PHPMD.StaticAccess")
  */
-class ExceptionsTest extends \PHPUnit_Framework_TestCase {
+class ExceptionsTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @test
