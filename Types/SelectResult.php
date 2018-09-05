@@ -37,7 +37,7 @@ class SelectResult {
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
     public static function create(array $tokens, $content) {
-        if (empty($content)) return $content;
+        if (empty($content) || !is_array($content)) return [];
         return empty($content[0]) ? SelectSingleResult::create($tokens, $content) : SelectAllResult::create($tokens, $content);
     }
 }

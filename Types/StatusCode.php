@@ -33,11 +33,11 @@ class StatusCode {
      * @var array
      */
     private static $expectedStatusCodes = [
-        'get'    => 200,
-        'put'    => 200,
-        'patch'  => 200,
-        'post'   => 201,
-        'delete' => 204
+        'get'    => [200, 203, 206, 404],
+        'put'    => [200, 202, 203, 204, 205, 404],
+        'patch'  => [200, 202, 203, 204, 205, 404],
+        'post'   => [200, 201, 202, 203, 204, 205],
+        'delete' => [200, 202, 203, 204, 205, 404]
     ];
 
     /**
@@ -52,6 +52,7 @@ class StatusCode {
     public static function create($method, DataSource $annotation = null) {
         Str::assert($method, 'method');
 
-        return !empty($annotation) && $annotation->getStatusCode() !== null ? $annotation->getStatusCode() : self::$expectedStatusCodes[$method];
+        $annotationStatusCodes = !empty($annotation) && $annotation->getStatusCodes() !== null ? $annotation->getStatusCodes() : array();
+        return $annotationStatusCodes ?: self::$expectedStatusCodes[$method];
     }
 }

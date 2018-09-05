@@ -21,6 +21,7 @@ namespace Circle\DoctrineRestDriver;
 use Circle\DoctrineRestDriver\Enums\HttpMethods;
 use Circle\DoctrineRestDriver\Exceptions\Exceptions;
 use Circle\DoctrineRestDriver\Factory\RestClientFactory;
+use Circle\DoctrineRestDriver\Factory\ResponseExceptionFactory;
 use Circle\DoctrineRestDriver\Types\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Circle\RestClientBundle\Services\RestClient as CiRestClient;
@@ -56,9 +57,14 @@ class RestClient {
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
     public function send(Request $request) {
-        $method     = strtolower($request->getMethod());
-        $response   = $method === HttpMethods::GET || $method === HttpMethods::DELETE ? $this->restClient->$method($request->getUrlAndQuery(), $request->getCurlOptions()) : $this->restClient->$method($request->getUrlAndQuery(), $request->getPayload(), $request->getCurlOptions());
+        $method   = strtolower($request->getMethod());
+        $response = $method === HttpMethods::GET || $method === HttpMethods::DELETE ? $this->restClient->$method($request->getUrlAndQuery(), $request->getCurlOptions()) : $this->restClient->$method($request->getUrlAndQuery(), $request->getPayload(), $request->getCurlOptions());
 
-        return $response->getStatusCode() === $request->getExpectedStatusCode() ? $response : Exceptions::RequestFailedException($request, $response->getStatusCode(), $response->getContent());
+        try {
+            return $request->isExpectedStatusCode($response->getStatusCode()) ? $response : Exceptions::RequestFailedException($request, $response->getStatusCode(), $response->getContent());
+        } catch (DBALException\DriverException $e) {
+            $responseExceptionFactory = new ResponseExceptionFactory();
+            throw $responseExceptionFactory->createDbalException($response, $e);
+        }
     }
 }

@@ -41,7 +41,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
      * @covers ::getPayload
      * @covers ::getQuery
      * @covers ::getCurlOptions
-     * @covers ::getExpectedStatusCode
+     * @covers ::isExpectedStatusCode
      * @covers ::__toString
      */
     public function constructAndGetAll() {
@@ -61,7 +61,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
         $this->assertSame('genious=1', $request->getQuery());
         $this->assertSame('GET http://circle.ai?genious=1 HTTP/1.1', $request->__toString());
         $this->assertEquals([], $request->getCurlOptions());
-        $this->assertEquals(200, $request->getExpectedStatusCode());
+        $this->assertTrue($request->isExpectedStatusCode(200));
     }
 
     /**

@@ -79,6 +79,23 @@ If your API routes follow these few conventions, using the driver is very easy:
 
 Don't worry, if this is not the case: Luckily, we provide a few annotations for you to configure your own routes.
 
+## Responses
+
+Your API is allowed to respond with a handful of different HTTP status codes to
+be deemed a successful response.
+
+| Method    | "successful" status codes    |
+|-----------|------------------------------|
+| GET       | 200, 203, 206, 404           |
+| PUT/PATCH | 200, 202, 203, 204, 205, 404 |
+| POST      | 200, 201, 202, 203, 204, 205 |
+| DELETE    | 200, 202, 203, 204, 205, 404 |
+
+Note that a 404 response is considered a "successful" response in some circumstances.
+This allows the driver to reflect a database being queried but returning no data
+due to an entity not being found, for example "/entity/1" will allow a 404 without
+causing an exception as it's perfectly acceptable to not find an entity from a
+database.
 
 The examples below show how to use the driver in a Symfony environment.
 
@@ -279,9 +296,9 @@ use Circle\DoctrineRestDriver\Annotations as DataSource;
  * @ORM\Table("products")
  * @DataSource\Select("http://www.yourSite.com/api/products/findOne/{id}")
  * @DataSource\Fetch("http://www.yourSite.com/api/products/findAll")
- * @DataSource\Insert("http://www.yourSite.com/api/products/insert", statusCode=200)
+ * @DataSource\Insert("http://www.yourSite.com/api/products/insert", statusCodes={200})
  * @DataSource\Update("http://www.yourSite.com/api/products/update/{id}", method="POST")
- * @DataSource\Delete("http://www.yourSite.com/api/products/remove/{id}", method="POST", statusCode=200)
+ * @DataSource\Delete("http://www.yourSite.com/api/products/remove/{id}", method="POST", statusCodes={200})
  */
 class Product {
 
@@ -309,6 +326,28 @@ class Product {
     public function getName() {
         return $this->name;
     }
+}
+```
+
+If you have a list of acceptable status codes you can also pass an array to the
+```statusCode``` option:
+
+```php
+<?php
+namespace CircleBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Circle\DoctrineRestDriver\Annotations as DataSource;
+
+/**
+ * This annotation marks the class as managed entity:
+ *
+ * @ORM\Entity
+ * @ORM\Table("products")
+ * @DataSource\Select("http://www.yourSite.com/api/products/findOne/{id}", statusCodes={200, 203, 404})
+ */
+class Product {
+   // ... //
 }
 ```
 

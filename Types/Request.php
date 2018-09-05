@@ -54,7 +54,7 @@ class Request {
     /**
      * @var int
      */
-    private $expectedStatusCode = 200;
+    private $expectedStatusCodes = [200];
 
     /**
      * Request constructor
@@ -84,7 +84,7 @@ class Request {
             'curlOptions'         => $options,
             'query'               => $this->query,
             'payload'             => $this->payload,
-            'expectedStatusCode'  => $this->expectedStatusCode
+            'expectedStatusCodes' => $this->expectedStatusCodes
         ]);
     }
 
@@ -143,12 +143,12 @@ class Request {
     }
 
     /**
-     * returns the expected response http code
+     * returns whether the given status code is expected
      *
-     * @return int
+     * @return bool
      */
-    public function getExpectedStatusCode() {
-        return $this->expectedStatusCode;
+    public function isExpectedStatusCode($statusCode) {
+        return in_array($statusCode, $this->expectedStatusCodes);
     }
 
     /**

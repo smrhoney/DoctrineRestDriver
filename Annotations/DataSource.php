@@ -36,9 +36,9 @@ interface DataSource {
     /**
      * returns the status code
      *
-     * @return int|null
+     * @return int[]|null
      */
-    public function getStatusCode();
+    public function getStatusCodes();
 
     /**
      * returns the method

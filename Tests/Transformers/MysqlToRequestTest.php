@@ -104,9 +104,10 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function selectOne() {
         $query    = 'SELECT name FROM products t0 WHERE t0.id = 1';
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => $this->apiUrl . '/products/1',
-            'curlOptions' => $this->options
+            'method'              => 'get',
+            'url'                 => $this->apiUrl . '/products/1',
+            'curlOptions'         => $this->options,
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -122,10 +123,11 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function selectOneBy() {
         $query    = 'SELECT name FROM products t0 WHERE t0.id=1 AND t0.name=myName';
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => $this->apiUrl . '/products/1',
-            'curlOptions' => $this->options,
-            'query'       => 'name=myName'
+            'method'              => 'get',
+            'url'                 => $this->apiUrl . '/products/1',
+            'curlOptions'         => $this->options,
+            'query'               => 'name=myName',
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -141,10 +143,11 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function selectBy() {
         $query    = 'SELECT name FROM products t0 WHERE t0.name=myName';
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => $this->apiUrl . '/products',
-            'curlOptions' => $this->options,
-            'query'       => 'name=myName'
+            'method'              => 'get',
+            'url'                 => $this->apiUrl . '/products',
+            'curlOptions'         => $this->options,
+            'query'               => 'name=myName',
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -160,9 +163,10 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function selectAll() {
         $query    = 'SELECT name FROM products';
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => $this->apiUrl . '/products',
-            'curlOptions' => $this->options
+            'method'              => 'get',
+            'url'                 => $this->apiUrl . '/products',
+            'curlOptions'         => $this->options,
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -178,9 +182,10 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function selectJoined() {
         $query    = 'SELECT p.name FROM products p JOIN product.categories c ON c.id = p.categories_id';
         $expected = new Request([
-            'method'      => 'get',
-            'url'         => $this->apiUrl . '/products',
-            'curlOptions' => $this->options
+            'method'              => 'get',
+            'url'                 => $this->apiUrl . '/products',
+            'curlOptions'         => $this->options,
+            'expectedStatusCodes' => [200, 203, 206, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -200,7 +205,7 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
             'url'                => $this->apiUrl . '/products',
             'curlOptions'        => $this->options,
             'payload'            => json_encode(['name' => 'myName']),
-            'expectedStatusCode' => 201
+            'expectedStatusCodes'=> [200, 201, 202, 203, 204, 205]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -216,10 +221,11 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function update() {
         $query    = 'UPDATE products SET name="myValue" WHERE id=1';
         $expected = new Request([
-            'method'      => 'put',
-            'url'         => $this->apiUrl . '/products/1',
-            'curlOptions' => $this->options,
-            'payload'     => json_encode(['name' => 'myValue'])
+            'method'              => 'put',
+            'url'                 => $this->apiUrl . '/products/1',
+            'curlOptions'         => $this->options,
+            'payload'             => json_encode(['name' => 'myValue']),
+            'expectedStatusCodes' => [200, 202, 203, 204, 205, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -235,10 +241,11 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function updateAll() {
         $query    = 'UPDATE products SET name="myValue"';
         $expected = new Request([
-            'method'      => 'put',
-            'url'         => $this->apiUrl . '/products',
-            'curlOptions' => $this->options,
-            'payload'     => json_encode(['name' => 'myValue'])
+            'method'              => 'put',
+            'url'                 => $this->apiUrl . '/products',
+            'curlOptions'         => $this->options,
+            'payload'             => json_encode(['name' => 'myValue']),
+            'expectedStatusCodes' => [200, 202, 203, 204, 205, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));
@@ -254,10 +261,11 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
     public function updatePatch() {
         $query    = 'UPDATE products SET name="myValue" WHERE id=1';
         $expected = new Request([
-            'method'      => 'patch',
-            'url'         => $this->apiUrl . '/products/1',
-            'curlOptions' => $this->options,
-            'payload'     => json_encode(['name' => 'myValue'])
+            'method'              => 'patch',
+            'url'                 => $this->apiUrl . '/products/1',
+            'curlOptions'         => $this->options,
+            'payload'             => json_encode(['name' => 'myValue']),
+            'expectedStatusCodes' => [200, 202, 203, 204, 205, 404]
         ]);
 
         $optionsOverride = [
@@ -282,7 +290,7 @@ class MysqlToRequestTest extends \PHPUnit\Framework\TestCase {
             'method'              => 'delete',
             'url'                 => $this->apiUrl . '/products/1',
             'curlOptions'         => $this->options,
-            'expectedStatusCode'  => 204
+            'expectedStatusCodes' => [200, 202, 203, 204, 205, 404]
         ]);
 
         $this->assertEquals($expected, $this->createMysqlToRequest()->transform($query));

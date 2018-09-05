@@ -54,7 +54,7 @@ class RequestFactory {
             'curlOptions'         => CurlOptions::create(array_merge($options['driverOptions'], HttpHeader::create($options['driverOptions'], $tokens))),
             'query'               => HttpQuery::create($tokens, $options['driverOptions']),
             'payload'             => Payload::create($tokens, $options),
-            'expectedStatusCode'  => StatusCode::create($method, $annotation)
+            'expectedStatusCodes' => StatusCode::create($method, $annotation)
         ]);
     }
 }
