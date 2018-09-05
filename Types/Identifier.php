@@ -19,7 +19,6 @@
 namespace Circle\DoctrineRestDriver\Types;
 
 use Circle\DoctrineRestDriver\MetaData;
-use Circle\DoctrineRestDriver\Validation\Assertions;
 
 /**
  * Extracts id information from a sql token array
@@ -45,10 +44,10 @@ class Identifier {
         $idAlias = self::alias($tokens);
 
         return array_reduce($tokens['WHERE'], function($carry, $token) use ($tokens, $idAlias) {
-            if (!is_int($carry)) return $carry;
+            if ($carry !== null) return (string)Value::create($carry);
             if ($token['expr_type'] === 'colref' && $token['base_expr'] === $idAlias) return $tokens['WHERE'][$carry+2]['base_expr'];
             if (!isset($tokens[$carry+1])) return '';
-        }, 0);
+        }, null);
     }
 
     /**
