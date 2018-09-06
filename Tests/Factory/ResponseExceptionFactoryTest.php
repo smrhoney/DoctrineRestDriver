@@ -28,7 +28,7 @@ use Doctrine\DBAL\Exception as DBALException;
  * 
  * @author Rob Treacy <robert.treacy@thesalegroup.co.uk>
  */
-class ResponseExceptionFactoryTest extends \PHPUnit_Framework_TestCase {
+class ResponseExceptionFactoryTest extends \PHPUnit\Framework\TestCase {
     private $responseExceptionFactory;
     
     public function setUp() {
@@ -42,8 +42,8 @@ class ResponseExceptionFactoryTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider createDbalExceptionProvider
      */
     public function createDbalException(Response $response, $expectedExceptionClass) {
-        $return = $this->responseExceptionFactory->createDbalException($response, $this->createMock(DriverExceptionInterface::class));
-        $this->assertInstanceOf($expectedExceptionClass, $return);
+        $return = $this->responseExceptionFactory->createDbalException($response, $this->createMock($expectedExceptionClass));
+        $this->assertInstanceOf(DriverExceptionInterface::class, $return);
     }
     
     /**

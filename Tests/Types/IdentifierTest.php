@@ -52,6 +52,48 @@ class IdentifierTest extends \PHPUnit\Framework\TestCase {
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
+    public function createWithStringId() {
+        $parser = new PHPSQLParser();
+        $tokens = $parser->parse('SELECT name FROM products WHERE id="test"');
+
+        $this->assertSame('test', Identifier::create($tokens));
+    }
+
+    /**
+     * @test
+     * @group  unit
+     * @covers ::create
+     *
+     * @SuppressWarnings("PHPMD.StaticAccess")
+     */
+    public function createWithStringIdSingleQuotes() {
+        $parser = new PHPSQLParser();
+        $tokens = $parser->parse('SELECT name FROM products WHERE id=\'test\'');
+
+        $this->assertSame('test', Identifier::create($tokens));
+    }
+
+    /**
+     * @test
+     * @group  unit
+     * @covers ::create
+     *
+     * @SuppressWarnings("PHPMD.StaticAccess")
+     */
+    public function createWithStringIdNoQuotes() {
+        $parser = new PHPSQLParser();
+        $tokens = $parser->parse('SELECT name FROM products WHERE id=test');
+
+        $this->assertSame('test', Identifier::create($tokens));
+    }
+
+    /**
+     * @test
+     * @group  unit
+     * @covers ::create
+     *
+     * @SuppressWarnings("PHPMD.StaticAccess")
+     */
     public function createWithEmptyId() {
         $parser = new PHPSQLParser();
         $tokens = $parser->parse('SELECT name FROM products WHERE name="test"');

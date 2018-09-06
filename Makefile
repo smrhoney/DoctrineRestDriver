@@ -19,6 +19,13 @@ test:
 	php -S 127.0.0.1:3000 -t Tests/app 2>1 & ./vendor/phpunit/phpunit/phpunit -c phpunit.xml --coverage-html $(LOGDIR)/coverage
 	ps -eaf | awk '/ph[p] -S/{ print $$2 }' | xargs kill
 	rm 1
+unit:
+	php -S 127.0.0.1:3000 -t Tests/app 2>1 & ./vendor/phpunit/phpunit/phpunit -c phpunit.xml --coverage-html $(LOGDIR)/coverage
+	ps -eaf | awk '/ph[p] -S/{ print $$2 }' | xargs kill
+	rm 1
+clean:
+	ps -eaf | awk '/ph[p] -S/{ print $$2 }' | xargs kill
+	rm 1
 docs:
 
 install:
