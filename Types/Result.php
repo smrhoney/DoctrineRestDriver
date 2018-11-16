@@ -53,8 +53,12 @@ class Result {
      */
     public function __construct($query, $requestMethod, Response $response, array $options = []) {
         $tokens  = (new PHPSQLParser())->parse($query);
-        $content = Format::create($options)->decode($response->getContent());
+
         $responseCode = $response->getStatusCode();
+
+        if ($responseCode === Response::HTTP_NO_CONTENT) $content = [];
+        else                                             $content = Format::create($options)->decode($response->getContent());
+
 
         $this->result = $this->createResult($tokens, $requestMethod, $responseCode, $content);
         $this->id     = $this->createId($tokens);
