@@ -52,13 +52,11 @@ class Result {
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
     public function __construct($query, $requestMethod, Response $response, array $options = []) {
-        $tokens  = (new PHPSQLParser())->parse($query);
+        $tokens = (new PHPSQLParser())->parse($query);
 
         $responseCode = $response->getStatusCode();
 
-        if ($responseCode === Response::HTTP_NO_CONTENT) $content = [];
-        else                                             $content = Format::create($options)->decode($response->getContent());
-
+        $content = $responseCode === Response::HTTP_NO_CONTENT ? [] : Format::create($options)->decode($response->getContent());
 
         $this->result = $this->createResult($tokens, $requestMethod, $responseCode, $content);
         $this->id     = $this->createId($tokens);
