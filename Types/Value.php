@@ -45,7 +45,7 @@ class Value {
         if($value === 'false') return false;
         if($value === 'null')  return null;
 
-        $unquoted = preg_replace('/^\"(.*)\"$|^\\\'(.*)\\\'$|^\`(.*)\`$/', '$1', $value);
+        $unquoted = preg_replace('/^(?|\"(.*)\"|\\\'(.*)\\\'|\`(.*)\`)$/', '$1', $value);
         if (!is_numeric($unquoted))                   return $unquoted;
         if ((string) intval($unquoted) === $unquoted) return intval($unquoted);
 
