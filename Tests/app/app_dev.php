@@ -19,9 +19,15 @@ require_once(__DIR__ . '/AppKernel.php');
 
 Debug::enable();
 
+
+/** @noinspection PhpParamsInspection */
 $kernel = new AppKernel('dev', true);
-$kernel->loadClassCache();
+if (version_compare(AppKernel::VERSION, '3.3','<')) {
+    /** @noinspection PhpUndefinedMethodInspection */
+    $kernel->loadClassCache();
+}
 $request  = Request::createFromGlobals();
+/** @noinspection PhpUnhandledExceptionInspection */
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);

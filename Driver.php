@@ -19,6 +19,9 @@
 namespace Circle\DoctrineRestDriver;
 
 use Circle\DoctrineRestDriver\Annotations\RoutingTable;
+use Circle\DoctrineRestDriver\Events\DriverSubscriber;
+use Circle\DoctrineRestDriver\Events\EventManagerAware;
+use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver as DriverInterface;
 use Doctrine\DBAL\Connection as AbstractConnection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
@@ -30,12 +33,16 @@ use Doctrine\DBAL\Schema\MySqlSchemaManager;
  * @author    Tobias Hauck <tobias@circle.ai>
  * @copyright 2015 TeeAge-Beatz UG
  */
-class Driver implements DriverInterface {
+class Driver implements DriverInterface, EventManagerAware {
 
     /**
      * @var Connection
      */
     private $connection;
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
 
     /**
      * {@inheritdoc}
@@ -77,4 +84,23 @@ class Driver implements DriverInterface {
     public function getDatabase(AbstractConnection $conn) {
         return 'rest_database';
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function setEventManager(EventManager $eventManager)
+    {
+        $this->eventManager = $eventManager;
+        $eventManager->addEventSubscriber(new DriverSubscriber($this));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+
 }

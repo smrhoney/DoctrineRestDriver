@@ -215,7 +215,8 @@ class Statement implements \IteratorAggregate, StatementInterface {
         $fetchMode = empty($fetchMode) ? $this->fetchMode : $fetchMode;
         Assertions::assertSupportedFetchMode($fetchMode);
 
-        return count($this->result) === 0 ? false : array_pop($this->result);
+
+        return empty($this->result) || count($this->result) === 0 ? false : array_pop($this->result);
     }
 
     /**

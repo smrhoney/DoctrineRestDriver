@@ -1,3 +1,6 @@
+# External Tools
+composer.phar
+
 # Framework directories
 *vendor/*
 *logs/*

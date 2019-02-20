@@ -14,15 +14,26 @@
   "license": [
     "GPL"
   ],
+
+  "config": {
+    "platform": {
+      "php": "5.6"
+    },
+    "sort-packages": true
+  },
   "require-dev": {
-    "symfony/expression-language": "^3.0",
-    "phpmd/phpmd" : "@stable",
-    "phpunit/phpunit" : "@stable",
-    "symfony/yaml": "3.*",
-    "sensio/framework-extra-bundle": "3.*",
-    "symfony/framework-bundle": "3.*",
     "doctrine/doctrine-bundle": "^1.6",
-    "symfony/validator": "3.*"
+    "phpmd/phpmd": "@stable",
+    "phpunit/phpunit": "@stable",
+    "sensio/framework-extra-bundle": "3.*",
+    "symfony/asset": "^3.4",
+    "symfony/expression-language": "^3.0",
+    "symfony/form": "^3.4",
+    "symfony/framework-bundle": "3.*",
+    "symfony/security-csrf": "^3.4",
+    "symfony/validator": "3.*",
+    "symfony/yaml": "3.*",
+    "zendframework/zend-mvc": "^3.1"
   },
   "autoload": {
     "psr-0": {
@@ -44,6 +55,7 @@
   },
   "require": {
     "php": ">=5.5",
+    "ext-json": "*",
     "doctrine/dbal": "2.*",
     "greenlion/php-sql-parser": "^4.0",
     "doctrine/orm": "2.*",

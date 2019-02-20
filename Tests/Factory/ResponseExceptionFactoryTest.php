@@ -42,8 +42,9 @@ class ResponseExceptionFactoryTest extends \PHPUnit\Framework\TestCase {
      * @dataProvider createDbalExceptionProvider
      */
     public function createDbalException(Response $response, $expectedExceptionClass) {
-        $return = $this->responseExceptionFactory->createDbalException($response, $this->createMock($expectedExceptionClass));
-        $this->assertInstanceOf(DriverExceptionInterface::class, $return);
+        $mock = $this->prophesize(DriverExceptionInterface::class)->reveal();
+        $return = $this->responseExceptionFactory->createDbalException($response, $mock);
+        $this->assertInstanceOf($expectedExceptionClass, $return);
     }
     
     /**

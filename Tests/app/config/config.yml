@@ -33,6 +33,7 @@ framework:
 doctrine:
     dbal:
         driver_class:   Circle\DoctrineRestDriver\Driver
+        wrapper_class:  Circle\DoctrineRestDriver\Wrapper
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"

@@ -51,6 +51,7 @@ class Connection extends AbstractConnection {
     public function __construct(array $params, Driver $driver, RoutingTable $routings, Configuration $config = null, EventManager $eventManager = null) {
         $this->routings = $routings;
         parent::__construct($params, $driver, $config, $eventManager);
+        //$this->getEventManager()->addEventSubscriber()
     }
 
     /**

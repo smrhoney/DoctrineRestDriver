@@ -52,19 +52,41 @@ class MockController extends Controller {
      *
      * @return Response
      */
-    public function getAllAction() {
-        return new Response(json_encode([
-            [
-                'id'    => 1,
-                'name'  => 'MyName',
-                'value' => 'MyValue',
-            ],
-            [
-                'id'    => 2,
-                'name'  => 'NextName',
-                'value' => 'NextValue',
-            ]
-        ]));
+    public function getAllAction(Request $request) {
+        $name = $request->query->get('name');
+
+        $myName = [
+            'id'    => 1,
+            'name'  => 'MyName',
+            'value' => 'MyValue',
+        ];
+
+        $nextName = [
+            'id'    => 2,
+            'name'  => 'NextName',
+            'value' => 'NextValue',
+        ];
+
+        if ($name === 'MyName') {
+            $data = json_encode($myName);
+        }
+
+        if ($name === 'NextName') {
+            $data = json_encode($nextName);
+        }
+
+        if (!isset($data) && $name) {
+            $data = json_encode([]);
+        }
+
+        if (! $name) {
+            $data = json_encode([
+                $myName,
+                $nextName,
+            ]);
+        }
+
+        return new Response($data);
     }
 
     /**

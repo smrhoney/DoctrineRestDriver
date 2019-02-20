@@ -18,9 +18,13 @@
 
 namespace Circle\DoctrineRestDriver\Tests;
 
+use Circle\DoctrineRestDriver\Driver;
 use Circle\DoctrineRestDriver\Tests\Entity\AssociatedEntity;
 use Circle\DoctrineRestDriver\Tests\Entity\TestEntity;
+use Circle\DoctrineRestDriver\Wrapper;
+use Circle\RestClientBundle\Exceptions\Interfaces\DetailedExceptionInterface;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\EventManager;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\ORM\EntityManager;
@@ -51,12 +55,27 @@ class FunctionalTest extends WebTestCase {
 
     /**
      * @test
+     * @group functional
+     * @covers \Circle\DoctrineRestDriver\Wrapper
+     */
+    public function eventManager(){
+        $connection = $this->em->getConnection();
+        $this->assertInstanceOf(Wrapper::class, $connection);
+        /** @var Driver $driver */
+        $driver = $connection->getDriver();
+        $this->assertInstanceOf(Driver::class, $driver);
+        $evm = $driver->getEventManager();
+        $this->assertInstanceOf(EventManager::class, $evm);
+    }
+
+    /**
+     * @test
      * @group  functional
-     * @covers Circle\DoctrineRestDriver\Driver
-     * @covers Circle\DoctrineRestDriver\Connection
-     * @covers Circle\DoctrineRestDriver\Statement
-     * @covers Circle\DoctrineRestDriver\Statement::<private>
-     * @covers Circle\DoctrineRestDriver\MetaData
+     * @covers \Circle\DoctrineRestDriver\Driver
+     * @covers \Circle\DoctrineRestDriver\Connection
+     * @covers \Circle\DoctrineRestDriver\Statement
+     * @covers \Circle\DoctrineRestDriver\Statement::<private>
+     * @covers \Circle\DoctrineRestDriver\MetaData
      */
     public function find() {
         $entity = $this->em->find('Circle\DoctrineRestDriver\Tests\Entity\TestEntity', 1);
@@ -73,10 +92,10 @@ class FunctionalTest extends WebTestCase {
      * @covers Circle\DoctrineRestDriver\Statement
      * @covers Circle\DoctrineRestDriver\Statement::<private>
      * @covers Circle\DoctrineRestDriver\MetaData
-     * @expectedException \Exception
      */
     public function findNonExisting() {
-        $this->em->find('Circle\DoctrineRestDriver\Tests\Entity\TestEntity', 2);
+        $result = $this->em->find('Circle\DoctrineRestDriver\Tests\Entity\TestEntity', 2);
+        $this->assertEquals(null, $result);
     }
 
     /**
@@ -270,14 +289,22 @@ class FunctionalTest extends WebTestCase {
      * @covers Circle\DoctrineRestDriver\Statement
      * @covers Circle\DoctrineRestDriver\Statement::<private>
      * @covers Circle\DoctrineRestDriver\MetaData
+     * @throws \Exception
      */
     public function dqlWithObjectParameter() {
-        $entity = $this->em
-            ->createQuery('SELECT p FROM Circle\DoctrineRestDriver\Tests\Entity\TestEntity p WHERE p.name = ?1')
-            ->setParameter(1, new \DateTime())
-            ->getResult();
+        try {
+            $entity = $this->em
+                ->createQuery('SELECT p FROM Circle\DoctrineRestDriver\Tests\Entity\TestEntity p WHERE p.name = ?1')
+                ->setParameter(1, 'NextName')
+                ->getResult();
+            $this->assertSame(1, count($entity));
+        } catch (DetailedExceptionInterface $e) {
+            echo "Message: " . $e->getDetailedMessage();
 
-        $this->assertSame(2, count($entity));
+            throw $e;
+        }
+
+
     }
 
     /**
@@ -288,10 +315,10 @@ class FunctionalTest extends WebTestCase {
      * @covers Circle\DoctrineRestDriver\Statement
      * @covers Circle\DoctrineRestDriver\Statement::<private>
      * @covers Circle\DoctrineRestDriver\MetaData
-     * @expectedException \Exception
      */
     public function nonImplementedEntity() {
-        $this->em->find('Circle\DoctrineRestDriver\Tests\Entity\NonImplementedEntity', 1);
+        $result = $this->em->find('Circle\DoctrineRestDriver\Tests\Entity\NonImplementedEntity', 1);
+        $this->assertEquals(null, $result);
     }
 
     /**

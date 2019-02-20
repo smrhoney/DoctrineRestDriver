@@ -19,6 +19,7 @@
 namespace Circle\DoctrineRestDriver\Tests;
 
 use Circle\DoctrineRestDriver\Driver;
+use Doctrine\Common\EventManager;
 
 /**
  * Tests the driver
@@ -98,5 +99,21 @@ class DriverTest extends \PHPUnit\Framework\TestCase {
         ];
         $connection = $this->driver->connect($params, null, null, $params['driverOptions']);
         $this->assertInstanceOf('Circle\DoctrineRestDriver\Connection', $connection);
+    }
+
+    /**
+     * @test
+     * @group unit
+     * @covers ::getEventManager
+     * @covers ::setEventManager
+     */
+    public function getEventManager() {
+        $mock = $this
+            ->getMockBuilder(EventManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->driver->setEventManager($mock);
+        $evm = $this->driver->getEventManager();
+        $this->assertSame($mock, $evm);
     }
 }

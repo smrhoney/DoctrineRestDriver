@@ -35,7 +35,7 @@ class ResponseExceptionFactory
      * 
      * @param Response $response
      * @param DriverExceptionInterface $exception
-     * @return DriverException
+     * @return \Exception
      */
     public function createDbalException(Response $response, DriverExceptionInterface $exception) {
         switch ($response->getStatusCode()) {
