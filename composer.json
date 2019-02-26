@@ -1,5 +1,5 @@
 {
-  "name": "circle/doctrine-rest-driver",
+  "name": "smrhoney/doctrine-rest-driver",
   "description": "Use a REST API as if it was your local database",
   "type": "library",
   "authors": [
