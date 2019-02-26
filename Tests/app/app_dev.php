@@ -17,7 +17,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 $loader = require __DIR__.'/autoload.php';
 require_once(__DIR__ . '/AppKernel.php');
 
-Debug::enable();
+//Debug::enable();
 
 
 /** @noinspection PhpParamsInspection */

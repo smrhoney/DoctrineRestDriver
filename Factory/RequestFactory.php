@@ -19,6 +19,7 @@
 namespace Circle\DoctrineRestDriver\Factory;
 
 use Circle\DoctrineRestDriver\Annotations\DataSource;
+use Circle\DoctrineRestDriver\MetaData;
 use Circle\DoctrineRestDriver\Types\HttpHeader;
 use Circle\DoctrineRestDriver\Types\CurlOptions;
 use Circle\DoctrineRestDriver\Types\HttpMethod;
@@ -39,20 +40,23 @@ class RequestFactory {
     /**
      * Creates a new Request with the given options
      *
-     * @param  string     $method
-     * @param  array      $tokens
-     * @param  array      $options
+     * @param  string $method
+     * @param  array $tokens
+     * @param  array $options
+     * @param MetaData $metaData
      * @param  DataSource $annotation
      * @return Request
      *
+     * @throws \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public function createOne($method, array $tokens, array $options, DataSource $annotation = null) {
+    public function createOne($method, array $tokens, array $options, MetaData $metaData, DataSource $annotation =
+    null) {
         return new Request([
             'method'              => HttpMethod::create($method, $annotation),
-            'url'                 => Url::createFromTokens($tokens, $options['host'], $annotation),
+            'url'                 => Url::createFromTokens($tokens, $options['host'], $metaData, $annotation),
             'curlOptions'         => CurlOptions::create(array_merge($options['driverOptions'], HttpHeader::create($options['driverOptions'], $tokens))),
-            'query'               => HttpQuery::create($tokens, $options['driverOptions']),
+            'query'               => HttpQuery::create($tokens, $metaData, $options['driverOptions'], $annotation),
             'payload'             => Payload::create($tokens, $options),
             'expectedStatusCodes' => StatusCode::create($method, $annotation)
         ]);

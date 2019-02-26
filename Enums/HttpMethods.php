@@ -19,6 +19,7 @@
 namespace Circle\DoctrineRestDriver\Enums;
 use Circle\DoctrineRestDriver\Exceptions\Exceptions;
 use Circle\DoctrineRestDriver\Exceptions\InvalidSqlOperationException;
+use Circle\DoctrineRestDriver\Types\SqlOperation;
 
 /**
  * Contains all available http methods of the driver
@@ -32,6 +33,7 @@ class HttpMethods {
     const PATCH  = 'patch';
     const DELETE = 'delete';
     const GET    = 'get';
+    const GET_ALL = 'getAll';
 
     /**
      * returns the sql operators equal http method
@@ -48,6 +50,8 @@ class HttpMethods {
         if ($operation === SqlOperations::SELECT) return HttpMethods::GET;
         if ($operation === SqlOperations::UPDATE) return $patchInsert ? HttpMethods::PATCH : HttpMethods::PUT;
         if ($operation === SqlOperations::DELETE) return HttpMethods::DELETE;
+
+        if ($operation === SqlOperations::SELECT_ALL) return HttpMethods::GET_ALL;
 
         return Exceptions::InvalidSqlOperationException($operation);
     }

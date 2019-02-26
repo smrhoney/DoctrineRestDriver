@@ -20,6 +20,7 @@ namespace Circle\DoctrineRestDriver\Types;
 
 use Circle\DoctrineRestDriver\Annotations\DataSource;
 use Circle\DoctrineRestDriver\Exceptions\Exceptions;
+use Circle\DoctrineRestDriver\MetaData;
 use Circle\DoctrineRestDriver\Validation\Assertions;
 use Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException;
 
@@ -59,15 +60,16 @@ class Url {
     /**
      * returns an url depending on the given tokens
      *
-     * @param  array      $tokens
-     * @param  string     $apiUrl
+     * @param  array $tokens
+     * @param  string $apiUrl
+     * @param MetaData $metaData
      * @param  DataSource $annotation
      * @return string
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public static function createFromTokens(array $tokens, $apiUrl, DataSource $annotation = null) {
-        $id    = Identifier::create($tokens);
+    public static function createFromTokens(array $tokens, $apiUrl, MetaData $metaData, DataSource $annotation = null) {
+        $id    = Identifier::create($tokens, $metaData);
         $route = empty($annotation) || $annotation->getRoute() === null ? Table::create($tokens) : $annotation->getRoute();
 
         return self::create($route, $apiUrl, $id);

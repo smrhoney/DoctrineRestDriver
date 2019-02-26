@@ -28,7 +28,10 @@ use Circle\DoctrineRestDriver\Types\Authentication;
 use Circle\DoctrineRestDriver\Types\Result;
 use Circle\DoctrineRestDriver\Types\SqlQuery;
 use Circle\DoctrineRestDriver\Validation\Assertions;
+use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver\Statement as StatementInterface;
+use Circle\DoctrineRestDriver\Events\ConstructionArgs;
+use Circle\DoctrineRestDriver\Events\RestDriverEvents as Events;
 
 /**
  * Executes the statement - sends requests to an api
@@ -99,25 +102,73 @@ class Statement implements \IteratorAggregate, StatementInterface {
      * @var array
      */
     private $options;
+    /**
+     * @var MetaData
+     */
+    private $metaData;
+
+
+    private $eventManager;
+
 
     /**
      * Statement constructor
      *
-     * @param  string       $query
-     * @param  array        $options
+     * @param  string $query
+     * @param  array $options
      * @param  RoutingTable $routings
-     * @throws \Exception
-     *
+     * @param MetaData $metaData
+     * @param EventManager|null $eventManager
+     * @throws Validation\Exceptions\NotNilException
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public function __construct($query, array $options, RoutingTable $routings) {
+    public function __construct(
+        $query,
+        array $options,
+        RoutingTable $routings,
+        MetaData $metaData,
+        EventManager $eventManager = null
+    ) {
+        $this->eventManager = $eventManager;
+
+        $this->metaData       = $metaData;
         $this->query          = SqlQuery::quoteUrl($query);
         $this->routings       = $routings;
-        $this->mysqlToRequest = new MysqlToRequest($options, $this->routings);
-        $this->restClient     = new RestClient();
 
         $this->authStrategy = Authentication::create($options);
         $this->options      = $options;
+
+        $this->createMysqlToRequest($options, $this->routings, $metaData);
+        $this->createRestClient();
+    }
+
+    public function createRestClient()
+    {
+        if ($this->eventManager)
+        {
+            $args = new ConstructionArgs(RestClient::class, []);
+            $this->eventManager->dispatchEvent(Events::CREATE_CLIENT);
+            $this->restClient = $args->getObject();
+        } else {
+            $this->restClient = new RestClient();
+        }
+    }
+
+
+    public function createMysqlToRequest($options, $routings, $metaData){
+        if ($this->eventManager)
+        {
+            $args = new ConstructionArgs(MysqlToRequest::class, [
+                $options,
+                $routings,
+                $metaData,
+                $this->eventManager
+            ]);
+            $this->eventManager->dispatchEvent(Events::CREATE_TRANSFORMER);
+            $this->mysqlToRequest = $args->getObject();
+        } else {
+            $this->mysqlToRequest = new MysqlToRequest($options, $routings, $metaData);
+        }
     }
 
     /**
@@ -163,7 +214,7 @@ class Statement implements \IteratorAggregate, StatementInterface {
 
         try {
             $response     = $this->restClient->send($request);
-            $result       = new Result($query, $request->getMethod(), $response, $this->options);
+            $result       = new Result($query, $request->getMethod(), $response, $this->metaData, $this->options);
             $this->result = $result->get();
             $this->id     = $result->id();
 

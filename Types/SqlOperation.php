@@ -27,7 +27,7 @@ namespace Circle\DoctrineRestDriver\Types;
 class SqlOperation {
 
     /**
-     * Returns the sql operation (SELECT, UPDATE, DELETE, INSERT)
+     * Returns the sql operation (SELECT, UPDATE, DELETE, INSERT, *_ALL)
      *
      * @param  array  $tokens
      * @return string
@@ -37,6 +37,13 @@ class SqlOperation {
     public static function create(array $tokens) {
         HashMap::assert($tokens, 'tokens');
 
-        return strtolower(array_keys($tokens)[0]);
+        $operation = strtolower(array_keys($tokens)[0]);
+
+        if (! isset($tokens['WHERE']) && $operation !== 'insert')
+        {
+            return $operation . "_all";
+        }
+
+        return $operation;
     }
 }

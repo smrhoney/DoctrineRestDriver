@@ -19,6 +19,7 @@
 
 namespace Circle\DoctrineRestDriver\Types;
 
+use Circle\DoctrineRestDriver\Annotations\DataSource;
 use Circle\DoctrineRestDriver\Enums\SqlOperations;
 use Circle\DoctrineRestDriver\MetaData;
 
@@ -35,20 +36,29 @@ class HttpQuery {
      * clause of the parsed sql tokens
      *
      * @param  array $tokens
+     * @param MetaData $metaData
      * @param  array $options
+     * @param DataSource $annotation
      * @return string|null
      *
+     * @throws \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public static function create(array $tokens, array $options = []) {
+    public static function create(
+        array $tokens,
+        MetaData $metaData,
+        array $options = [],
+        DataSource $annotation = null
+    ) {
         HashMap::assert($tokens, 'tokens');
 
         $operation = SqlOperation::create($tokens);
         if ($operation !== SqlOperations::SELECT) return null;
 
         $query = implode('&', array_filter([
-            self::createConditionals($tokens),
+            self::createConditionals($tokens, $metaData),
             self::createPagination($tokens, $options),
+            self::createFromAnnotation($annotation),
         ]));
 
         return $query;
@@ -56,17 +66,18 @@ class HttpQuery {
 
     /**
      * Create a string of conditional parameters.
-     * 
+     *
      * @param array $tokens
+     * @param MetaData $metaData
      * @return string
-     * 
+     *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public static function createConditionals(array $tokens) {
+    public static function createConditionals(array $tokens, MetaData $metaData) {
         if(!isset($tokens['WHERE'])) return '';
 
         $tableAlias = Table::alias($tokens);
-        $primaryKeyColumn = sprintf('%s.%s', $tableAlias, Identifier::column($tokens, new MetaData));
+        $primaryKeyColumn = sprintf('%s.%s', $tableAlias, Identifier::column($tokens, $metaData));
 
         // Get WHERE conditions as string including table alias and primary key column if present
         $sqlWhereString = array_reduce($tokens['WHERE'], function($query, $token) use ($tableAlias) {
@@ -95,5 +106,21 @@ class HttpQuery {
         $paginationParameters = PaginationQuery::create($tokens, $perPageParam, $pageParam);
 
         return $paginationParameters ? http_build_query($paginationParameters) : '';
+    }
+
+    /**
+     * Create a string of query parameters
+     *
+     * @param DataSource|null $source
+     * @return string
+     *
+     * @SuppressWarnings("PHPMD.StaticAccess")
+     */
+    public static function createFromAnnotation(DataSource $source = null) {
+        if (! $source) {
+            return '';
+        }
+
+        return empty($source->getQuery()) ? '' : http_build_query($source->getQuery());
     }
 }

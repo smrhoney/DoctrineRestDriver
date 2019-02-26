@@ -53,4 +53,10 @@ interface DataSource {
      * @return array|null
      */
     public function getOptions();
+
+    /**
+     * returns the query
+     * @return array
+     */
+    public function getQuery();
 }

@@ -49,7 +49,7 @@ class FunctionalTest extends WebTestCase {
      * {@inheritdoc}
      */
     public function setUp() {
-        static::bootKernel();
+        static::bootKernel(['debug' => false]);
         $this->em = static::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 

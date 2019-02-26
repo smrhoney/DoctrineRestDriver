@@ -28,6 +28,7 @@ use Circle\DoctrineRestDriver\MetaData;
  */
 class Identifier {
 
+
     /**
      * Returns the id in the WHERE clause if exists
      *
@@ -36,12 +37,12 @@ class Identifier {
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public static function create(array $tokens) {
+    public static function create(array $tokens, MetaData $metaData) {
         HashMap::assert($tokens, 'tokens');
 
         if (empty($tokens['WHERE'])) return '';
 
-        $idAlias = self::alias($tokens);
+        $idAlias = self::alias($tokens, $metaData);
 
         return array_reduce($tokens['WHERE'], function($carry, $token) use ($tokens, $idAlias) {
             if ($carry !== null) return (string)Value::create($carry);
@@ -58,8 +59,8 @@ class Identifier {
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public static function alias(array $tokens) {
-        $column     = self::column($tokens, new MetaData());
+    public static function alias(array $tokens, MetaData $meaData) {
+        $column     = self::column($tokens, $meaData);
         $tableAlias = Table::alias($tokens);
 
         return empty($tableAlias) ? $column : $tableAlias . '.' . $column;

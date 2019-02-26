@@ -1,5 +1,5 @@
 {
-  "name": "circle/doctrine-rest-driver",
+  "name": "smrhoney/doctrine-rest-driver",
   "description": "Use a REST API as if it was your local database",
   "type": "library",
   "authors": [
@@ -23,6 +23,7 @@
   },
   "require-dev": {
     "doctrine/doctrine-bundle": "^1.6",
+    "phing/phing": "^2.16",
     "phpmd/phpmd": "@stable",
     "phpunit/phpunit": "@stable",
     "sensio/framework-extra-bundle": "3.*",
@@ -54,11 +55,18 @@
     }
   },
   "require": {
-    "php": ">=5.5",
+    "php": ">=5.6",
+    "ext-curl": "*",
     "ext-json": "*",
+    "ext-pdo": "*",
     "doctrine/dbal": "2.*",
     "greenlion/php-sql-parser": "^4.0",
     "doctrine/orm": "2.*",
     "ci/restclientbundle": "^2.0.2"
+  },
+
+  "scripts": {
+      "serve": "php -S 127.0.0.1:3000 -t ./Tests/app",
+      "md": "phpmd . text ruleset.xml --exclude vendor,logs,Tests/app"
   }
 }

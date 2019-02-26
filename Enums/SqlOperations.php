@@ -29,4 +29,7 @@ class SqlOperations {
     const UPDATE = 'update';
     const DELETE = 'delete';
     const SELECT = 'select';
+    const SELECT_ALL = 'select_all';
+    const UPDATE_ALL = 'update_all';
+    const DELETE_ALL = 'delete_all';
 }

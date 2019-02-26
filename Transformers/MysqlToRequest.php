@@ -20,7 +20,9 @@ namespace Circle\DoctrineRestDriver\Transformers;
 
 use Circle\DoctrineRestDriver\Annotations\RoutingTable;
 use Circle\DoctrineRestDriver\Enums\HttpMethods;
+use Circle\DoctrineRestDriver\Events\ConstructionArgs;
 use Circle\DoctrineRestDriver\Factory\RequestFactory;
+use Circle\DoctrineRestDriver\MetaData;
 use Circle\DoctrineRestDriver\Types\Annotation;
 use Circle\DoctrineRestDriver\Types\Id;
 use Circle\DoctrineRestDriver\Types\Request;
@@ -29,7 +31,9 @@ use Circle\DoctrineRestDriver\Types\SqlQuery;
 use Circle\DoctrineRestDriver\Types\Table;
 use Circle\DoctrineRestDriver\Types\Url;
 use Circle\DoctrineRestDriver\Validation\Assertions;
+use Doctrine\Common\EventManager;
 use PHPSQLParser\PHPSQLParser;
+use Circle\DoctrineRestDriver\Events\RestDriverEvents as Events;
 
 /**
  * Transforms a given sql query to a corresponding request
@@ -58,19 +62,60 @@ class MysqlToRequest {
      * @var RoutingTable
      */
     private $routings;
+    /**
+     * @var MetaData
+     */
+    private $metaData;
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
 
     /**
      * MysqlToRequest constructor
      *
-     * @param array        $options
+     * @param array $options
      * @param RoutingTable $routings
+     * @param MetaData $metaData
+     * @param EventManager $eventManager
      */
-    public function __construct(array $options, RoutingTable $routings) {
+    public function __construct(
+        array $options,
+        RoutingTable $routings,
+        MetaData $metaData,
+        EventManager $eventManager = null
+    ) {
+        $this->eventManager   = $eventManager;
+
         $this->options        = $options;
         $this->parser         = new PHPSQLParser();
         $this->requestFactory = new RequestFactory();
         $this->routings       = $routings;
+        $this->metaData       = $metaData;
+
     }
+
+
+    protected function createParser(){
+        if ($this->eventManager) {
+            $args = new ConstructionArgs(PHPSQLParser::class, []);
+            $this->eventManager->dispatchEvent(Events::CREATE_SQL_PARSER,$args);
+            $this->parser = $args->getObject();
+        } else {
+            $this->parser = new PHPSQLParser();
+        }
+    }
+
+    protected function createRequestFactory(){
+        if ($this->eventManager) {
+            $args = new ConstructionArgs(RequestFactory::class, []);
+            $this->eventManager->dispatchEvent(Events::CREATE_REQUEST_FACTORY,$args);
+            $this->requestFactory = $args->getObject();
+        } else {
+            $this->requestFactory = new RequestFactory();
+        }
+    }
+
 
     /**
      * Transforms the given query into a request object
@@ -87,6 +132,7 @@ class MysqlToRequest {
         $method     = HttpMethods::ofSqlOperation(SqlOperation::create($tokens), $usePatch);
         $annotation = Annotation::get($this->routings, Table::create($tokens), $method);
 
-        return $this->requestFactory->createOne($method, $tokens, $this->options, $annotation);
+        $method = str_replace('All', '', $method);
+        return $this->requestFactory->createOne($method, $tokens, $this->options, $this->metaData, $annotation);
     }
 }

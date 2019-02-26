@@ -32,6 +32,7 @@ use Circle\DoctrineRestDriver\Annotations as DataSource;
  * @ORM\Entity
  * @ORM\Table(name="products")
  * @DataSource\Select("http://127.0.0.1:3000/app_dev.php/mockapi/products")
+ * @DataSource\Fetch("http://127.0.0.1:3000/app_dev.php/mockapi/products")
  */
 class TestEntity {
     /**

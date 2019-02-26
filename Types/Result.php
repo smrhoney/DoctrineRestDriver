@@ -45,13 +45,15 @@ class Result {
     /**
      * Result constructor
      *
-     * @param string   $query
+     * @param string $query
+     * @param $requestMethod
      * @param Response $response
-     * @param array    $options
+     * @param MetaData $metaData
+     * @param array $options
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public function __construct($query, $requestMethod, Response $response, array $options = []) {
+    public function __construct($query, $requestMethod, Response $response, MetaData $metaData, array $options = []) {
         $tokens = (new PHPSQLParser())->parse($query);
 
         $responseCode = $response->getStatusCode();
@@ -59,7 +61,7 @@ class Result {
         $content = $responseCode === Response::HTTP_NO_CONTENT ? [] : Format::create($options)->decode($response->getContent());
 
         $this->result = $this->createResult($tokens, $requestMethod, $responseCode, $content);
-        $this->id     = $this->createId($tokens);
+        $this->id     = $this->createId($tokens, $metaData);
     }
 
     /**
@@ -82,12 +84,13 @@ class Result {
      * returns the id
      *
      * @param  array $tokens
+     * @param MetaData $metaData
      * @return mixed
      *
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    private function createId(array $tokens) {
-        $idColumn = Identifier::column($tokens, new MetaData());
+    private function createId(array $tokens, MetaData $metaData) {
+        $idColumn = Identifier::column($tokens, $metaData);
         return empty($this->result[$idColumn]) ? null : $this->result[$idColumn];
     }
 

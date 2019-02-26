@@ -22,8 +22,10 @@ use Circle\DoctrineRestDriver\Annotations\RoutingTable;
 use Circle\DoctrineRestDriver\Events\DriverSubscriber;
 use Circle\DoctrineRestDriver\Events\EventManagerAware;
 use Doctrine\Common\EventManager;
+use Doctrine\Common\Persistence\Mapping\AbstractClassMetadataFactory;
 use Doctrine\DBAL\Driver as DriverInterface;
 use Doctrine\DBAL\Connection as AbstractConnection;
+use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\MySqlSchemaManager;
 
@@ -36,13 +38,17 @@ use Doctrine\DBAL\Schema\MySqlSchemaManager;
 class Driver implements DriverInterface, EventManagerAware {
 
     /**
-     * @var Connection
+     * @var RestConnection
      */
     private $connection;
     /**
      * @var EventManager
      */
     private $eventManager;
+    /**
+     * @var MetaData
+     */
+    private $metaData;
 
     /**
      * {@inheritdoc}
@@ -52,9 +58,29 @@ class Driver implements DriverInterface, EventManagerAware {
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array()) {
         if (!empty($this->connection)) return $this->connection;
 
-        $metaData         = new MetaData();
-        $this->connection = new Connection($params, $this, new RoutingTable($metaData->getEntityNamespaces()));
+        if (! $this->metaData) {
+            throw new \RuntimeException("Missing required metadata");
+        }
+
+        //$this->getEventManager()->hasListeners('preConnect');
+        //$this->getEventManager()->dispatchEvent()
+
+        $this->connection = new RestConnection(
+            $params,
+            $this,
+            new RoutingTable($this->metaData->getEntityNamespaces()),
+            $this->getEventManager()
+        );
         return $this->connection;
+    }
+
+    public function setMetaData(AbstractClassMetadataFactory $data){
+        $this->metaData = new MetaData($data);
+    }
+
+    public function getMetaData()
+    {
+        return $this->metaData;
     }
 
     /**

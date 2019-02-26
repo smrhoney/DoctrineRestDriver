@@ -18,6 +18,7 @@
 
 namespace Circle\DoctrineRestDriver;
 
+use Doctrine\Common\Persistence\Mapping\AbstractClassMetadataFactory;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -29,17 +30,20 @@ use Doctrine\Common\Persistence\ObjectManager;
 class MetaData {
 
     /**
-     * @var ObjectManager
+     * @var AbstractClassMetadataFactory
      */
-    private $em;
+    private $metaData;
+    /**
+     * @var array
+     */
+    private $cache;
 
     /**
      * MetaData constructor
+     * @param AbstractClassMetadataFactory $metaData
      */
-    public function __construct() {
-        $this->em = array_filter(debug_backtrace(), function($trace) {
-            return isset($trace['object']) && $trace['object'] instanceof ObjectManager;
-        });
+    public function __construct(AbstractClassMetadataFactory $metaData) {
+        $this->metaData = $metaData;
     }
 
     /**
@@ -57,9 +61,14 @@ class MetaData {
     /**
      * returns all entity meta data if existing
      *
+     * @param bool $useCache
      * @return array
      */
-    public function get() {
-        return empty($this->em) ? [] : array_pop($this->em)['object']->getMetaDataFactory()->getAllMetaData();
+    public function get($useCache = true) {
+        if ($useCache && ! empty($this->cache)) {
+            return $this->cache;
+        }
+        $this->cache = $this->metaData->getAllMetadata();
+        return $this->cache;
     }
 }

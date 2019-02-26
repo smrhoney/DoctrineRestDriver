@@ -38,8 +38,7 @@ class DriverSubscriber implements EventSubscriber
     }
 
     public function loadClassMetadata(LoadClassMetadataEventArgs $args){
-        //var_dump($args->getClassMetadata());
-        //$this->driver->setClassMetaData($args->getClassMetadata());
+        $this->driver->setMetaData($args->getEntityManager()->getMetadataFactory());
     }
 
 
