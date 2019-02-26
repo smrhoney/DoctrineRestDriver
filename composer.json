@@ -39,7 +39,8 @@
   "target-dir": "Circle/DoctrineRestDriver",
   "extra": {
     "branch-alias": {
-      "dev-master": "1.3-dev"
+      "dev-master": "1.3-dev",
+      "dev-development": "1.4-dev"
     }
   },
   "require": {
