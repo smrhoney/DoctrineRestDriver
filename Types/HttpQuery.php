@@ -53,7 +53,8 @@ class HttpQuery {
         HashMap::assert($tokens, 'tokens');
 
         $operation = SqlOperation::create($tokens);
-        if ($operation !== SqlOperations::SELECT) return null;
+        if ($operation !== SqlOperations::SELECT
+            && $operation !== SqlOperations::SELECT_ALL) return null;
 
         $query = implode('&', array_filter([
             self::createConditionals($tokens, $metaData),
