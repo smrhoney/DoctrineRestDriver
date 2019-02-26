@@ -72,7 +72,7 @@ trait Route {
         $this->statusCodes = MaybeList::assert($settings->get('statusCodes'), 'statusCodes');
         $this->method     = MaybeString::assert($settings->get('method'), 'method');
         $this->options    = MaybeList::assert($settings->get('options'), 'options');
-        $this->query      = MaybeString::assert($settings->get('query'), 'query');
+        $this->query      = MaybeList::assert($settings->get('query'), 'query');
     }
 
     /**
