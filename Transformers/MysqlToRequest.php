@@ -88,11 +88,11 @@ class MysqlToRequest {
         $this->eventManager   = $eventManager;
 
         $this->options        = $options;
-        $this->parser         = new PHPSQLParser();
-        $this->requestFactory = new RequestFactory();
         $this->routings       = $routings;
         $this->metaData       = $metaData;
 
+        $this->createParser();
+        $this->createRequestFactory();
     }
 
 
