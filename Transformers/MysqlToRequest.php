@@ -32,6 +32,7 @@ use Circle\DoctrineRestDriver\Types\Table;
 use Circle\DoctrineRestDriver\Types\Url;
 use Circle\DoctrineRestDriver\Validation\Assertions;
 use Doctrine\Common\EventManager;
+use Doctrine\ORM\Mapping\NamedQuery;
 use PHPSQLParser\PHPSQLParser;
 use Circle\DoctrineRestDriver\Events\RestDriverEvents as Events;
 
@@ -129,8 +130,16 @@ class MysqlToRequest {
         $usePatch = isset($this->options['driverOptions']['use_patch']) ? $this->options['driverOptions']['use_patch'] : false;
         
         $tokens     = $this->parser->parse($query);
+        $entity     = Table::create($tokens);
         $method     = HttpMethods::ofSqlOperation(SqlOperation::create($tokens), $usePatch);
-        $annotation = Annotation::get($this->routings, Table::create($tokens), $method);
+
+        if ($qName = Annotation::getQueryName($this->routings, $entity, $query)) {
+            $annotation = Annotation::getNamedRoute($this->routings, $entity, $qName);
+        }
+
+        if (empty($annotation)) {
+            $annotation = Annotation::get($this->routings, $entity, $method);
+        }
 
         $method = str_replace('All', '', $method);
         return $this->requestFactory->createOne($method, $tokens, $this->options, $this->metaData, $annotation);

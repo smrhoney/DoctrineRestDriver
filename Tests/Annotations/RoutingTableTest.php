@@ -18,6 +18,7 @@
 
 namespace Circle\DoctrineRestDriver\Tests\Annotations;
 
+use Circle\DoctrineRestDriver\Annotations\NamedRoute;
 use Circle\DoctrineRestDriver\Annotations\Routing;
 use Circle\DoctrineRestDriver\Annotations\RoutingTable;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -45,11 +46,23 @@ class RoutingTableTest extends \PHPUnit\Framework\TestCase {
         AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/GeneratedValue.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/OneToMany.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/ManyToOne.php');
+
+        AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/NamedNativeQueries.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/NamedNativeQuery.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/SqlResultSetMapping.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/SqlResultSetMappings.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/EntityResult.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/FieldResult.php');
+
+
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Insert.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Update.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Select.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Delete.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Fetch.php');
+
+        AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/NamedRoute.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/NamedRoutes.php');
     }
 
     /**
@@ -70,5 +83,36 @@ class RoutingTableTest extends \PHPUnit\Framework\TestCase {
         $expected     = new Routing($entities['categories']);
 
         $this->assertEquals($expected, $routingTable->get('categories'));
+    }
+
+    /**
+     * @test
+     * @group unit
+     * @covers ::namedQueries
+     */
+    public function namedQueries() {
+        $entities = [
+            'categories'     => 'Circle\DoctrineRestDriver\Tests\Entity\AssociatedEntity',
+            'nonImplemented' => 'Circle\DoctrineRestDriver\Tests\Entity\NonImplementedEntity',
+            'products'       => 'Circle\DoctrineRestDriver\Tests\Entity\TestEntity',
+        ];
+
+        $routingTable = new RoutingTable($entities);
+        $namedRoutes = $routingTable->get('products')->namedRoutes();
+        $namedNativeQueries = $routingTable->get('products')->namedNativeQueries();
+
+        $expected     = [
+            new NamedRoute([
+                'name' => 'new-products',
+                'value' => 'http://127.0.0.1/app_dev.php/mockapi/new-products'
+            ]),
+            new NamedRoute([
+                'name'  => 'recall-products',
+                'value' => 'http://127.0.0.1/app_dev.php/mockapi/recall-products'
+            ]),
+        ];
+
+        $this->assertCount(2, $namedNativeQueries);
+        $this->assertEquals($expected, $namedRoutes);
     }
 }

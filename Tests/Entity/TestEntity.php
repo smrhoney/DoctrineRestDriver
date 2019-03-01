@@ -33,6 +33,42 @@ use Circle\DoctrineRestDriver\Annotations as DataSource;
  * @ORM\Table(name="products")
  * @DataSource\Select("http://127.0.0.1:3000/app_dev.php/mockapi/products")
  * @DataSource\Fetch("http://127.0.0.1:3000/app_dev.php/mockapi/products")
+ *
+ * @DataSource\NamedRoutes({
+ *     @DataSource\NamedRoute("http://127.0.0.1:3000/app_dev.php/mockapi/new-products",
+ *     name="newProducts"),
+ *     @DataSource\NamedRoute("http://127.0.0.1:3000/app_dev.php/mockapi/recall-products",
+ *     name="recallProducts")
+ *     })
+ *
+ * @ORM\NamedNativeQueries({
+ *        @ORM\NamedNativeQuery(
+ *          name="newProducts",
+ *          resultSetMapping="mappingProductsResults",
+ *          query="SELECT id, name, value FROM products WHERE status = 1"
+ *       ),
+ *        @ORM\NamedNativeQuery(
+ *          name="recallProducts",
+ *          resultSetMapping="mappingProductsResults",
+ *          query="SELECT id, name, value FROM products  WHERE status = 2"
+ *      )
+ * })
+ *
+ * @ORM\SqlResultSetMappings({
+ *     @ORM\SqlResultSetMapping(
+ *     name = "mappingProductsResults",
+ *     entities= {
+ *         @ORM\EntityResult(
+ *           entityClass="__CLASS__",
+ *           fields={
+ *              @ORM\FieldResult(name="id"),
+ *              @ORM\FieldResult(name="name"),
+ *              @ORM\FieldResult(name="value")
+ *          }
+ *        )
+ *     }
+ *     )
+ * })
  */
 class TestEntity {
     /**

@@ -20,6 +20,8 @@ namespace Circle\DoctrineRestDriver\Types;
 
 use Circle\DoctrineRestDriver\Annotations\DataSource;
 use Circle\DoctrineRestDriver\Annotations\RoutingTable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * Extracts id information from a sql token array
@@ -53,5 +55,45 @@ class Annotation {
      */
     public static function exists(RoutingTable $annotations = null, $entityAlias, $method) {
         return !empty($annotations) && $annotations->get($entityAlias) !== null && $annotations->get($entityAlias)->$method() !== null;
+    }
+
+
+    /**
+     * returns the corresponding named data source annotation if exists
+     *
+     * @param  RoutingTable $annotations
+     * @param  string       $entityAlias
+     * @param  string       $name
+     * @return DataSource|null
+     */
+    public static function getNamedRoute(RoutingTable $annotations, $entityAlias, $name) {
+        $routes = new ArrayCollection($annotations->get($entityAlias)->namedRoutes());
+
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq("name", $name));
+
+        $matches = $routes->matching($criteria);
+        if ($matches->isEmpty()) return null;
+        return $matches->first();
+    }
+
+    /**
+     * returns
+     * @param RoutingTable $annotations
+     * @param $entityAlias
+     * @param $query
+     * @return mixed|null
+     */
+    public static function getQueryName(RoutingTable $annotations, $entityAlias, $query) {
+        $queries = new ArrayCollection($annotations->get($entityAlias)->namedNativeQueries());
+
+        $criteria = Criteria::create();
+        $criteria->where(Criteria::expr()->eq("query", $query));
+
+        $matches = $queries->matching($criteria);
+        if ($matches->isEmpty()) return null;
+        /** @var \Doctrine\ORM\Mapping\NamedNativeQuery $query */
+        $query = $matches->first();
+        return $query->name;
     }
 }

@@ -50,6 +50,9 @@ class ReaderTest extends \PHPUnit\Framework\TestCase {
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Select.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Delete.php');
         AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/Fetch.php');
+
+        AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/NamedRoute.php');
+        AnnotationRegistry::registerFile(__DIR__ . '/../../Annotations/NamedRoutes.php');
     }
 
     /**

@@ -25,6 +25,7 @@ use Circle\DoctrineRestDriver\Wrapper;
 use Circle\RestClientBundle\Exceptions\Interfaces\DetailedExceptionInterface;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\EventManager;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\ORM\EntityManager;
@@ -332,5 +333,24 @@ class FunctionalTest extends WebTestCase {
      */
     public function customIdentifierEntity() {
         $this->em->find('Circle\DoctrineRestDriver\Tests\Entity\CustomIdentifierEntity', 1);
+    }
+
+    /**
+     * @test
+     * @group functional
+     *
+     */
+    public function namedQuery(){
+        $class = 'Circle\DoctrineRestDriver\Tests\Entity\TestEntity';
+
+        $repo = $this->em->getRepository($class);
+        /** @var \Doctrine\ORM\Mapping\ClassMetadata $meta */
+        $meta = $this->em->getMetadataFactory()->getMetadataFor($class);
+        $this->assertEquals(2, count($meta->getNamedNativeQueries()));
+
+        $query = $repo->createNativeNamedQuery('newProducts');
+        $products = $query->execute();
+
+        $this->assertEquals(1, count($products));
     }
 }

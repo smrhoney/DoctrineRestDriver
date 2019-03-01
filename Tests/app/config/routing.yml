@@ -39,3 +39,9 @@ circle_doctrine_rest_driver_mock_post_association:
     defaults:  { _controller: Circle\DoctrineRestDriver\Tests\Controller\MockController::postCategoriesAction }
     methods: [ POST ]
     condition: "request.getScriptName() == '/app_dev.php'"
+
+circle_doctrine_rest_driver_mock_new_products:
+    path:   /mockapi/new-products
+    defaults:  { _controller: Circle\DoctrineRestDriver\Tests\Controller\MockController::newProductsAction }
+    methods: [ GET ]
+    condition: "request.getScriptName() == '/app_dev.php'"

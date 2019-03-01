@@ -148,4 +148,18 @@ class MockController extends Controller {
             'product_id' => $payload->product_id,
         ]), 201);
     }
+
+
+    public function newProductsAction(Request $request) {
+        $nextName = [
+            'id'    => 2,
+            'name'  => 'NextName',
+            'value' => 'NextValue',
+        ];
+
+
+        return new Response (json_encode([
+           $nextName,
+        ]));
+    }
 }

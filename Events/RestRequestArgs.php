@@ -18,23 +18,36 @@
 
 namespace Circle\DoctrineRestDriver\Events;
 
+use Circle\DoctrineRestDriver\Types\Request;
+use Doctrine\Common\EventArgs;
+
 /**
- * Class RestDriverEvents
- *
- * @author Shawn Rhoney <smrhoney@gmail.com>
+ * Class RestRequestArgs
  * @package Circle\DoctrineRestDriver\Events
+ * @author Shawn Rhoney <smrhoney@gmail.com>
  */
-final class RestDriverEvents
+class RestRequestArgs extends EventArgs
 {
-    const PREPARE_STATEMENT = 'prepare_statement';
+    /**
+     * @var Request 
+     */
+    private $request;
+    
+    /**
+     * RestRequestArgs constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        $this->request = $request;   
+    }
 
-    const CREATE_TRANSFORMER = 'create_transformer';
-
-    const CREATE_CLIENT = 'create_client';
-
-    const CREATE_REQUEST_FACTORY = 'create_request_factory';
-
-    const CREATE_SQL_PARSER = 'create_sql_parser';
-
-    const SEND_REQUEST = 'sendRequest';
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+    
 }

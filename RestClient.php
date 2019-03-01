@@ -19,10 +19,13 @@
 namespace Circle\DoctrineRestDriver;
 
 use Circle\DoctrineRestDriver\Enums\HttpMethods;
+use Circle\DoctrineRestDriver\Events\RestDriverEvents;
+use Circle\DoctrineRestDriver\Events\RestRequestArgs;
 use Circle\DoctrineRestDriver\Exceptions\Exceptions;
 use Circle\DoctrineRestDriver\Factory\RestClientFactory;
 use Circle\DoctrineRestDriver\Factory\ResponseExceptionFactory;
 use Circle\DoctrineRestDriver\Types\Request;
+use Doctrine\Common\EventManager;
 use Symfony\Component\HttpFoundation\Response;
 use Circle\RestClientBundle\Services\RestClient as CiRestClient;
 use Circle\DoctrineRestDriver\Exceptions\RequestFailedException;
@@ -39,12 +42,18 @@ class RestClient {
      * @var CiRestClient
      */
     private $restClient;
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
 
     /**
      * RestClient constructor
+     * @param EventManager|null $eventManager
      */
-    public function __construct() {
+    public function __construct(EventManager $eventManager = null) {
         $this->restClient = (new RestClientFactory())->createOne([]);
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -57,6 +66,10 @@ class RestClient {
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
     public function send(Request $request) {
+        if ($this->eventManager && $this->eventManager->hasListeners(RestDriverEvents::SEND_REQUEST)) {
+            $this->eventManager->dispatchEvent(RestDriverEvents::SEND_REQUEST, new RestRequestArgs($request));
+        }
+
         $method   = strtolower($request->getMethod());
         $response = $method === HttpMethods::GET || $method === HttpMethods::DELETE ? $this->restClient->$method($request->getUrlAndQuery(), $request->getCurlOptions()) : $this->restClient->$method($request->getUrlAndQuery(), $request->getPayload(), $request->getCurlOptions());
 

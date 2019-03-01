@@ -52,5 +52,9 @@
     "greenlion/php-sql-parser": "^4.0",
     "doctrine/orm": "2.*",
     "ci/restclientbundle": "^2.0.2"
+  },
+
+  "scripts": {
+    "serve": "php -S 127.0.0.1:3000 -t ./tests/app"
   }
 }

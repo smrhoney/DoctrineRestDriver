@@ -150,7 +150,7 @@ class Statement implements \IteratorAggregate, StatementInterface {
             $this->eventManager->dispatchEvent(Events::CREATE_CLIENT);
             $this->restClient = $args->getObject();
         } else {
-            $this->restClient = new RestClient();
+            $this->restClient = new RestClient($this->eventManager);
         }
     }
 

@@ -18,6 +18,8 @@
 
 namespace Circle\DoctrineRestDriver\Annotations;
 
+use Doctrine\ORM\Mapping\NamedNativeQuery;
+
 /**
  * Contains routing information about a specific entity
  *
@@ -57,6 +59,16 @@ class Routing {
     private $getAll;
 
     /**
+     * @var NamedRoutes
+     */
+    private $namedRoutes;
+
+    /**
+     * @var \Doctrine\ORM\Mapping\NamedNativeQueries
+     */
+    private $namedNativeQueries;
+
+    /**
      * @var array
      */
     private static $annotations = [
@@ -65,7 +77,9 @@ class Routing {
         'patch'  => 'Circle\DoctrineRestDriver\Annotations\Update',
         'get'    => 'Circle\DoctrineRestDriver\Annotations\Select',
         'delete' => 'Circle\DoctrineRestDriver\Annotations\Delete',
-        'getAll' => 'Circle\DoctrineRestDriver\Annotations\Fetch'
+        'getAll' => 'Circle\DoctrineRestDriver\Annotations\Fetch',
+        'namedRoutes'  => 'Circle\DoctrineRestDriver\Annotations\NamedRoutes',
+        'namedNativeQueries' => 'Doctrine\ORM\Mapping\NamedNativeQueries'
     ];
 
     /**
@@ -132,5 +146,19 @@ class Routing {
      */
     public function getAll() {
         return $this->getAll;
+    }
+
+    /**
+     * @return NamedRoute[]
+     */
+    public function namedRoutes() {
+        return $this->namedRoutes ? $this->namedRoutes->value : [];
+    }
+
+    /**
+     * @return NamedNativeQuery[]
+     */
+    public function namedNativeQueries() {
+        return $this->namedNativeQueries ? $this->namedNativeQueries->value : [];
     }
 }
