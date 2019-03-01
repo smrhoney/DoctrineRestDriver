@@ -146,11 +146,11 @@ class Statement implements \IteratorAggregate, StatementInterface {
     {
         if ($this->eventManager)
         {
-            $args = new ConstructionArgs(RestClient::class, []);
+            $args = new ConstructionArgs(RestClient::class, [$this->eventManager]);
             $this->eventManager->dispatchEvent(Events::CREATE_CLIENT);
             $this->restClient = $args->getObject();
         } else {
-            $this->restClient = new RestClient($this->eventManager);
+            $this->restClient = new RestClient();
         }
     }
 
