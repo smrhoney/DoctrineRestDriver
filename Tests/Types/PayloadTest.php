@@ -18,6 +18,7 @@
 
 namespace Circle\DoctrineRestDriver\Tests\Types;
 
+use Circle\DoctrineRestDriver\MetaData;
 use Circle\DoctrineRestDriver\Types\Payload;
 use PHPSQLParser\PHPSQLParser;
 
@@ -46,7 +47,8 @@ class PayloadTest extends \PHPUnit\Framework\TestCase {
             'value' => 'testvalue',
         ]);
 
-        $this->assertSame($expected, Payload::create($tokens, []));
+        $metaData = $this->prophesize(MetaData::class);
+        $this->assertSame($expected, Payload::create($tokens, [], $metaData->reveal()));
     }
 
     /**
@@ -64,7 +66,8 @@ class PayloadTest extends \PHPUnit\Framework\TestCase {
             'value' => 'testvalue',
         ]);
 
-        $this->assertSame($expected, Payload::create($tokens, []));
+        $metaData = $this->prophesize(MetaData::class);
+        $this->assertSame($expected, Payload::create($tokens, [], $metaData->reveal()));
     }
 
     /**
@@ -78,6 +81,7 @@ class PayloadTest extends \PHPUnit\Framework\TestCase {
         $parser   = new PHPSQLParser();
         $tokens   = $parser->parse('SELECT name FROM products WHERE id=1');
 
-        $this->assertSame(null, Payload::create($tokens, []));
+        $metaData = $this->prophesize(MetaData::class);
+        $this->assertSame(null, Payload::create($tokens, [], $metaData->reveal()));
     }
 }

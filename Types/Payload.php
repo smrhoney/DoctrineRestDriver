@@ -19,6 +19,7 @@
 namespace Circle\DoctrineRestDriver\Types;
 
 use Circle\DoctrineRestDriver\Enums\SqlOperations;
+use Circle\DoctrineRestDriver\MetaData;
 
 /**
  * Payload type: Union type for InsertChangeSet and InsertChangeSet
@@ -32,15 +33,19 @@ class Payload {
      * Returns an InsertChangeSet::create or InsertChangeSet::create
      * result or null depending on the given tokens array
      *
-     * @param  array       $tokens
-     * @param  array       $options
+     * @param  array $tokens
+     * @param  array $options
+     * @param MetaData $metaData
      * @return null|string
      *
+     * @throws \Circle\DoctrineRestDriver\Validation\Exceptions\InvalidTypeException
      * @SuppressWarnings("PHPMD.StaticAccess")
      */
-    public static function create(array $tokens, array $options) {
+    public static function create(array $tokens, array $options, MetaData $metaData) {
         HashMap::assert($tokens, 'tokens');
 
+        $options['Tokens'] = $tokens;
+        $options['MetaData'] = $metaData;
         $format    = Format::create($options);
         $operation = SqlOperation::create($tokens);
 

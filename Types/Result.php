@@ -58,6 +58,8 @@ class Result {
 
         $responseCode = $response->getStatusCode();
 
+        $options['MetaData'] = $metaData;
+        $options['Tokens'] = $tokens;
         $content = $responseCode === Response::HTTP_NO_CONTENT ? [] : Format::create($options)->decode($response->getContent());
 
         $this->result = $this->createResult($tokens, $requestMethod, $responseCode, $content);
