@@ -87,7 +87,7 @@ class Annotation {
     public static function getQueryName(RoutingTable $annotations, $entityAlias, $query) {
         $queries = new ArrayCollection($annotations->get($entityAlias)->namedNativeQueries());
 
-        if (preg_match('/--#(.*)$/', $query, $matches)) {
+        if (preg_match('/^--#([A-z]+)/', $query, $matches)) {
             return $matches[1];
         }
 
