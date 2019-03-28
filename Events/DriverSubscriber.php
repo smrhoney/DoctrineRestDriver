@@ -44,7 +44,7 @@ class DriverSubscriber implements EventSubscriber
         ];
     }
 
-    public function loadClassMetadata(ConnectionEventArgs $args){
+    public function preConnect(ConnectionEventArgs $args){
         $driver = $args->getDriver();
         if ( $driver instanceof Driver) {
             $driver->setMetaData($this->entityManager->getMetadataFactory());
