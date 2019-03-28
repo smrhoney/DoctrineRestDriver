@@ -21,19 +21,6 @@ use Doctrine\DBAL\Event;
 class Wrapper extends \Doctrine\DBAL\Connection
 {
     /**
-     * @var EventManager
-     */
-    private $_eventManager;
-    /**
-     * @inheritDoc
-     */
-    public function __construct(array $params, Driver $driver, Configuration $config = null, EventManager $eventManager = null)
-    {
-        $this->_eventManager = $eventManager;
-        parent::__construct($params, $driver, $config, $eventManager);
-    }
-
-    /**
      * @inheritdoc
      */
     public function connect()
