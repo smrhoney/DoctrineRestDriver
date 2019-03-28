@@ -5,25 +5,33 @@
  * Date: 2/19/2019
  * Time: 10:41 AM
  */
-
 namespace Circle\DoctrineRestDriver\Events;
-
 
 use Circle\DoctrineRestDriver\Driver;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
-use Doctrine\ORM\Events;
+use Doctrine\DBAL\Event\ConnectionEventArgs;
+use Doctrine\ORM\EntityManager;
 
+/**
+ * Class DriverSubscriber
+ * @package Circle\DoctrineRestDriver\Events
+ */
 class DriverSubscriber implements EventSubscriber
 {
-    /**
-     * @var Driver
-     */
-    private $driver;
 
-    public function __construct(Driver $driver)
+
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * DriverSubscriber constructor.
+     * @param EntityManager $entityManager
+     */
+    public function __construct(EntityManager $entityManager)
     {
-        $this->driver = $driver;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -32,14 +40,16 @@ class DriverSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::loadClassMetadata,
-
+            'preConnect',
         ];
     }
 
-    public function loadClassMetadata(LoadClassMetadataEventArgs $args){
-        $this->driver->setMetaData($args->getEntityManager()->getMetadataFactory());
+    public function loadClassMetadata(ConnectionEventArgs $args){
+        $driver = $args->getDriver();
+        if ( $driver instanceof Driver) {
+            $driver->setMetaData($this->entityManager->getMetadataFactory());
+            $driver->setEventManager($this->entityManager->getEventManager());
+        }
     }
-
 
 }

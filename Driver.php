@@ -117,7 +117,6 @@ class Driver implements DriverInterface, EventManagerAware {
     public function setEventManager(EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
-        $eventManager->addEventSubscriber(new DriverSubscriber($this));
     }
 
     /**
