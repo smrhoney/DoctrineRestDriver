@@ -8,17 +8,13 @@
 
 namespace Circle\DoctrineRestDriver;
 
-
-use Circle\DoctrineRestDriver\Events\EventManagerAware;
-use Doctrine\Common\EventManager;
-use Doctrine\DBAL\Configuration;
-use Doctrine\DBAL\Driver;
-use Doctrine\DBAL\Event;
+use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\Event as DbalEvent;
 
 /**
  * @inheritdoc
  */
-class Wrapper extends \Doctrine\DBAL\Connection
+class Wrapper extends DbalConnection
 {
     /**
      * @inheritdoc
@@ -27,7 +23,7 @@ class Wrapper extends \Doctrine\DBAL\Connection
     {
 
         if ($this->_eventManager->hasListeners('preConnect')) {
-            $eventArgs = new Event\ConnectionEventArgs($this);
+            $eventArgs = new DbalEvent\ConnectionEventArgs($this);
             $this->_eventManager->dispatchEvent('preConnect', $eventArgs);
         }
         return parent::connect();
